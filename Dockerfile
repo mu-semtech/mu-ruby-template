@@ -2,6 +2,8 @@ FROM erikap/ruby-sinatra:ruby-2.1-latest
 
 MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
 
+ENV APP_ENTRYPOINT web.rb
+
 ADD . /usr/src/app
 
 ONBUILD ADD . /app/

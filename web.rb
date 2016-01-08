@@ -70,4 +70,5 @@ helpers do
 
 end
 
-require_relative 'ext/web.rb'
+app_file = ENV['APP_ENTRYPOINT']
+require_relative "ext/#{app_file}"

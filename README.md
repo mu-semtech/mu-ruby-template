@@ -2,9 +2,9 @@
 Template for running Sinatra microservices
 
 ## Using the template
-Put your entrypoint in `web.rb`. You can use the Gemfile as you would expect.
-
 Extend the `semtech/mu-sinatra-template` and set a maintainer. That's it.
+
+Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (default: `web.rb`). You can use the Gemfile as you would expect.
 
 ## Example Dockerfile
 
