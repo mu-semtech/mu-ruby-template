@@ -14,7 +14,7 @@ end
 
 include RDF
 MU = RDF::Vocabulary.new('http://mu.semte.ch/vocabularies/')
-
+DCT = RDF::Vocabulary.new('http://purl.org/dc/terms/')
 
 ###
 # Helpers
