@@ -53,16 +53,16 @@ helpers do
   def update_modified(subject, modified = DateTime.now.xmlschema)
     query =  " WITH <#{settings.graph}> "
     query += " DELETE {"
-    query += "   <#{subject}> <#{DC.modified}> ?modified ."
+    query += "   <#{subject}> <#{DCT.modified}> ?modified ."
     query += " }"
     query += " WHERE {"
-    query += "   <#{subject}> <#{DC.modified}> ?modified ."
+    query += "   <#{subject}> <#{DCT.modified}> ?modified ."
     query += " }"
     settings.sparql_client.update(query)
 
     query =  " INSERT DATA {"
     query += "   GRAPH <#{settings.graph}> {"
-    query += "     <#{subject}> <#{DC.modified}> \"#{modified}\"^^xsd:dateTime ."
+    query += "     <#{subject}> <#{DCT.modified}> \"#{modified}\"^^xsd:dateTime ."
     query += "   }"
     query += " }"
     update(query)
