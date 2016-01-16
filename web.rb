@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sparql/client'
 require 'json'
 require 'rdf/vocab'
-require 'securerandom'
+require 'bson'
 
 configure do
   set :graph, ENV['MU_APPLICATION_GRAPH']
@@ -24,7 +24,7 @@ MU = RDF::Vocabulary.new('http://mu.semte.ch/vocabularies/')
 helpers do
 
   def generate_uuid
-    SecureRandom.uuid
+    BSON::ObjectId.new.to_s
   end
 
   def session_id_header(request)

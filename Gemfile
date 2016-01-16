@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 
+gem 'bson'
 gem 'json'
 gem 'rdf'
 gem 'rdf-vocab'
