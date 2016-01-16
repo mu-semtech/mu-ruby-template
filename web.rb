@@ -23,7 +23,7 @@ DCT = RDF::Vocabulary.new('http://purl.org/dc/terms/')
 helpers do
 
   def session_id_header(request)
-    request.env['HTTP_X_MU_SESSION_ID']
+    request.env['HTTP_MU_SESSION_ID']
   end
 
   def rewrite_url_header(request)
