@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sparql/client'
 require 'json'
+require 'rdf/vocab'
 
 configure do
   set :graph, ENV['MU_APPLICATION_GRAPH']
@@ -14,7 +15,6 @@ end
 
 include RDF
 MU = RDF::Vocabulary.new('http://mu.semte.ch/vocabularies/')
-DCT = RDF::Vocabulary.new('http://purl.org/dc/terms/')
 
 ###
 # Helpers
@@ -53,16 +53,16 @@ helpers do
   def update_modified(subject, modified = DateTime.now.xmlschema)
     query =  " WITH <#{settings.graph}> "
     query += " DELETE {"
-    query += "   <#{subject}> <#{DCT.modified}> ?modified ."
+    query += "   <#{subject}> <#{RDF::Vocab::DC.modified}> ?modified ."
     query += " }"
     query += " WHERE {"
-    query += "   <#{subject}> <#{DCT.modified}> ?modified ."
+    query += "   <#{subject}> <#{RDF::Vocab::DC.modified}> ?modified ."
     query += " }"
     settings.sparql_client.update(query)
 
     query =  " INSERT DATA {"
     query += "   GRAPH <#{settings.graph}> {"
-    query += "     <#{subject}> <#{DCT.modified}> \"#{modified}\"^^xsd:dateTime ."
+    query += "     <#{subject}> <#{RDF::Vocab::DC.modified}> \"#{modified}\"^^xsd:dateTime ."
     query += "   }"
     query += " }"
     update(query)
