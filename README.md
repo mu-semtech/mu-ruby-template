@@ -6,14 +6,18 @@ Extend the `semtech/mu-sinatra-template` and set a maintainer. That's it.
 
 Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (default: `web.rb`). You can use the Gemfile as you would expect.
 
-The template provides a `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
-
 ## Example Dockerfile
 
     FROM semtech/mu-sinatra-template:ruby-2.1-latest
     MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
     # ONBUILD of mu-sinatra-template takes care of everything
 
+## Using the template for development
+To use the template while developing your app, start a container in development mode with your code folder mounted in `/usr/src/app/ext`:
+
+    docker run --volume /path/to/your/code:/usr/src/app/ext -e RACK_ENV=development -d semtech/mu-sinatra-template:ruby-2.1-latest
+    
+Changes will be automatically picked up by Sinatra.
 
 ## Configuration
 The triple store used in the backend is linked to the login service container as `database`.
@@ -22,6 +26,10 @@ The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the tripl
 
 ## Helper methods
 The template provides the user with several helper methods.
+
+#### log
+The template provides a `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
+
 #### generate_uuid()
 Generate a random UUID (String).
 
