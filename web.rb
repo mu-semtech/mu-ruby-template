@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'logger'
 require 'sparql/client'
-require 'json'
+require 'multi_json'
 require 'rdf/vocab'
 require 'bson'
 
@@ -54,7 +54,7 @@ helpers do
 
   def error(title, status = 400)
     log.error "HTTP status #{status}: #{title}"
-    halt status, { errors: [{ title: title }] }.to_json
+    halt status, MultiJson.dump({ errors: [{ title: title }] })
   end
 
   def validate_json_api_content_type(request)
