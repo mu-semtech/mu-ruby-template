@@ -30,6 +30,8 @@ The template provides the user with several helper methods.
 #### log
 The template provides a `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
 
+Logs are written to the `/logs` directory in the docker container.
+
 #### generate_uuid()
 Generate a random UUID (String).
 
