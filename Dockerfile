@@ -4,6 +4,7 @@ MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
 
 ENV APP_ENTRYPOINT web.rb
 ENV LOG_LEVEL info
+ENV MU_SPARQL_ENDPOINT 'http://database:8890/sparql'
 
 ADD . /usr/src/app
 
