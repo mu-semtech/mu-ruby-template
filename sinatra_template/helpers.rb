@@ -24,7 +24,7 @@ module SinatraTemplate
     end
   
     def validate_json_api_content_type(request)
-      error("Content-Type must be application/vnd.api+json instead of #{request_env['CONTENT_TYPE']}.") if not request.env['CONTENT_TYPE'] =~ /^application\/vnd\.api\+json/
+      error("Content-Type must be application/vnd.api+json instead of #{request.env['CONTENT_TYPE']}.") if not request.env['CONTENT_TYPE'] =~ /^application\/vnd\.api\+json/
     end
   
     def validate_resource_type(expected_type, data)

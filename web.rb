@@ -8,7 +8,7 @@ require_relative 'sinatra_template/helpers.rb'
 
 configure do
   set :graph, ENV['MU_APPLICATION_GRAPH']
-  set :sparql_client, SPARQL::Client.new('http://database:8890/sparql')
+  set :sparql_client, SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'])
 
   ###
   # Logging
@@ -34,6 +34,5 @@ MU_CORE = RDF::Vocabulary.new(MU.to_uri.to_s + 'core/')
 ###
 
 helpers SinatraTemplate::Helpers
-
 app_file = ENV['APP_ENTRYPOINT']
 require_relative "ext/#{app_file}"

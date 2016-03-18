@@ -20,15 +20,17 @@ To use the template while developing your app, start a container in development 
 Changes will be automatically picked up by Sinatra.
 
 ## Configuration
-The triple store used in the backend is linked to the login service container as `database`.
+The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environment variable. By default this is set to `http://database:8890/sparql`. In that case the triple store used in the backend should be linked to the login service container as `database`.
 
-The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the triple store the microservice will work in. The graph name can be used in the service via `settings.graph`.
+The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the triple store the microservice will work in. By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
 ## Helper methods
 The template provides the user with several helper methods.
 
 #### log
 The template provides a `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
+
+Logs are written to the `/logs` directory in the docker container.
 
 #### generate_uuid()
 Generate a random UUID (String).
