@@ -8,14 +8,14 @@ Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (def
 
 ## Example Dockerfile
 
-    FROM semtech/mu-sinatra-template:v1.1.0-ruby2.1 
+    FROM semtech/mu-sinatra-template:1.1.0-ruby2.1 
     MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
     # ONBUILD of mu-sinatra-template takes care of everything
 
 ## Using the template for development
 To use the template while developing your app, start a container in development mode with your code folder mounted in `/usr/src/app/ext`:
 
-    docker run --volume /path/to/your/code:/usr/src/app/ext -e RACK_ENV=development -d semtech/mu-sinatra-template:v1.1.0-ruby2.1 
+    docker run --volume /path/to/your/code:/usr/src/app/ext -e RACK_ENV=development -d semtech/mu-sinatra-template:1.1.0-ruby2.1 
     
 Changes will be automatically picked up by Sinatra.
 
