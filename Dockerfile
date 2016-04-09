@@ -11,5 +11,6 @@ ADD . /usr/src/app
 
 ONBUILD ADD . /app/
 ONBUILD RUN ln -s /app /usr/src/app/ext \
+     && ln -s /app/spec /usr/src/app/spec/ext \
      && cd /usr/src/app \
-     && bundle install --without development test
+     && bundle install
