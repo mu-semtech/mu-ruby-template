@@ -8,21 +8,23 @@ Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (def
 
 ## Example Dockerfile
 
-    FROM semtech/mu-sinatra-template:1.1.0-ruby2.1 
+    FROM semtech/mu-sinatra-template:1.2.0-ruby2.1 
     MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
     # ONBUILD of mu-sinatra-template takes care of everything
-
-## Using the template for development
-To use the template while developing your app, start a container in development mode with your code folder mounted in `/usr/src/app/ext`:
-
-    docker run --volume /path/to/your/code:/usr/src/app/ext -e RACK_ENV=development -d semtech/mu-sinatra-template:1.1.0-ruby2.1 
-    
-Changes will be automatically picked up by Sinatra.
 
 ## Configuration
 The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environment variable. By default this is set to `http://database:8890/sparql`. In that case the triple store used in the backend should be linked to the login service container as `database`.
 
 The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the triple store the microservice will work in. By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
+
+## Develop a microservice using the template
+To use the template while developing your app, start a container in development mode with your code folder mounted in `/usr/src/app/ext`:
+
+    docker run --volume /path/to/your/code:/usr/src/app/ext
+                -e RACK_ENV=development
+	        -d semtech/mu-sinatra-template:1.2.0-ruby2.1 
+    
+Changes will be automatically picked up by Sinatra.
 
 ## Helper methods
 The template provides the user with several helper methods.
@@ -58,3 +60,26 @@ Executes the given SPARQL update query.
 
 #### update_modified(subject, modified = DateTime.now.xmlschema)
 Executes a SPARQL query to update the modification date of the given subject URI (string). The date defaults to now.
+
+
+## Writing tests for your microservice
+To test your app, run the container with `RACK_ENV` set to `test`. All [rspec](http://rspec.info/) tests matching `*_spec.rb` in `spec/` and its subdirectories will be executed.
+
+    docker run --rm -e RACK_ENV=test microservice-image
+
+To run the tests while developing, start an interactive container in the test enviroment with your code and `spec/` folder mounted:
+
+    docker run --volume /path/to/your/code:/usr/src/app/ext
+                --volume /path/to/your/code/spec:/usr/src/app/spec/ext
+                -e RACK_ENV=test
+                -it semtech/mu-sinatra-template:1.2.0-ruby2.1 /bin/bash
+    
+You can now run your tests inside the container with:
+
+    bundle install
+    rspec -c
+
+
+To get help on the available options of `rspec` execute:
+
+    rspec -h
