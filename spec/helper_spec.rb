@@ -6,23 +6,30 @@ end
 
 describe 'helpers' do
   subject { MyHelper.new }
-  describe "validate_json_api_content_type" do
-    # FF < 43
-    it "should allow media types if a request specifies the header Content-Type: application/vnd.api+json" do
-      request = Object.new
-      expect(request).to receive(:env).and_return('CONTENT_TYPE' => "application/vnd.api+json;charset=UTF-8")
-      expect(subject).not_to receive(:error)
-      subject.validate_json_api_content_type(request) 
+  describe 'validate_json_api_content_type' do
+    context 'when Content-Type is JSONAPI (application/vnd.api+json)' do
+      it 'does not respond with an error' do
+        valid_request = Object.new
+        expect(valid_request).to receive(:env).and_return('CONTENT_TYPE' => "application/vnd.api+json")
+        expect(subject).not_to receive(:error)
+        subject.validate_json_api_content_type(valid_request)
+      end
     end
-    it "should allow only application/vnd.api+json as content type" do
-      invalid_request = Object.new
-      expect(invalid_request).to receive(:env).and_return('CONTENT_TYPE' => "application/json")
-      expect(subject).to receive(:error)
-      subject.validate_json_api_content_type(invalid_request)
-      valid_request = Object.new
-      expect(valid_request).to receive(:env).and_return('CONTENT_TYPE' => "application/json")
-      expect(subject).not_to receive(:error)
-      subject.validate_json_api_content_type(valid_request)
+    context 'when Content-Type is JSONAPI with media types' do
+      it 'does not respond with an error' do
+        request = Object.new
+        expect(request).to receive(:env).and_return('CONTENT_TYPE' => "application/vnd.api+json;charset=UTF-8")
+        expect(subject).not_to receive(:error)
+        subject.validate_json_api_content_type(request) 
+      end
+    end
+    context 'when Content-Type is not JSONAPI' do
+      it 'returns an error' do
+        invalid_request = Object.new
+        expect(invalid_request).to receive(:env).twice.and_return('CONTENT_TYPE' => "application/json")
+        expect(subject).to receive(:error)
+        subject.validate_json_api_content_type(invalid_request)
+      end
     end
   end
 end
