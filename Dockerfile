@@ -9,8 +9,11 @@ ENV MU_APPLICATION_GRAPH 'http://mu.semte.ch/application'
 
 ADD . /usr/src/app
 
-ONBUILD ADD . /app/
-ONBUILD RUN ln -s /app /usr/src/app/ext \
+RUN ln -s /app /usr/src/app/ext \
      && ln -s /app/spec /usr/src/app/spec/ext \
      && cd /usr/src/app \
+     && bundle install
+
+ONBUILD ADD . /app/
+ONBUILD RUN cd /usr/src/app \
      && bundle install
