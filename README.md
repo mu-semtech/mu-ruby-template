@@ -18,7 +18,7 @@ The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environme
 The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the triple store the microservice will work in. By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
 ## Develop a microservice using the template
-To use the template while developing your app, start a container in development mode with your code folder mounted in `/usr/src/app/ext`:
+To use the template while developing your app, start a container in development mode with your code folder mounted in `/app`:
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=development
@@ -67,7 +67,7 @@ To test your app, run the container with `RACK_ENV` set to `test`. All [rspec](h
 
     docker run --rm -e RACK_ENV=test microservice-image
 
-To run the tests while developing, start an interactive container in the test enviroment with your code and `spec/` folder mounted:
+To run the tests while developing, start an interactive container in the test enviroment  with your code folder mounted in `/app`:
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
