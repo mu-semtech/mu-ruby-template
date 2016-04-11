@@ -20,7 +20,7 @@ The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the tripl
 ## Develop a microservice using the template
 To use the template while developing your app, start a container in development mode with your code folder mounted in `/usr/src/app/ext`:
 
-    docker run --volume /path/to/your/code:/usr/src/app/ext
+    docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=development
 	        -d semtech/mu-sinatra-template:1.2.0-ruby2.1 
     
@@ -69,8 +69,7 @@ To test your app, run the container with `RACK_ENV` set to `test`. All [rspec](h
 
 To run the tests while developing, start an interactive container in the test enviroment with your code and `spec/` folder mounted:
 
-    docker run --volume /path/to/your/code:/usr/src/app/ext
-                --volume /path/to/your/code/spec:/usr/src/app/spec/ext
+    docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
                 -it semtech/mu-sinatra-template:1.2.0-ruby2.1 /bin/bash
     
@@ -78,8 +77,3 @@ You can now run your tests inside the container with:
 
     bundle install
     rspec -c
-
-
-To get help on the available options of `rspec` execute:
-
-    rspec -h
