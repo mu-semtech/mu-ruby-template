@@ -1,16 +1,16 @@
-# Mu Sinatra template
-Template for running Sinatra microservices
+# Mu Ruby template
+Template for running Ruby/[Sinatra](http://www.sinatrarb.com/) microservices
 
 ## Using the template
-Extend the `semtech/mu-sinatra-template` and set a maintainer. That's it.
+Extend the `semtech/mu-ruby-template` and set a maintainer. That's it.
 
 Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (default: `web.rb`). You can use the Gemfile as you would expect.
 
 ## Example Dockerfile
 
-    FROM semtech/mu-sinatra-template:1.2.0-ruby2.1 
+    FROM semtech/mu-ruby-template:1.2.0-ruby2.1 
     MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
-    # ONBUILD of mu-sinatra-template takes care of everything
+    # ONBUILD of mu-ruby-template takes care of everything
 
 ## Configuration
 The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environment variable. By default this is set to `http://database:8890/sparql`. In that case the triple store used in the backend should be linked to the login service container as `database`.
@@ -22,7 +22,7 @@ To use the template while developing your app, start a container in development 
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=development
-	        -d semtech/mu-sinatra-template:1.2.0-ruby2.1 
+	        -d semtech/mu-ruby-template:1.2.0-ruby2.1 
     
 Changes will be automatically picked up by Sinatra.
 
@@ -71,7 +71,7 @@ To run the tests while developing, start an interactive container in the test en
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
-                -it semtech/mu-sinatra-template:1.2.0-ruby2.1 /bin/bash
+                -it semtech/mu-ruby-template:1.2.0-ruby2.1 /bin/bash
     
 You can now run your tests inside the container with:
 
