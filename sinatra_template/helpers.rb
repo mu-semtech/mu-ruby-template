@@ -58,5 +58,19 @@ module SinatraTemplate
       query += " }"
       update(query)
     end
+    
+    def escape_string_parameter (parameter)
+      if parameter
+        newparameter = parameter.gsub /["]/, '\"'
+        newparameter = newparameter.gsub /[']/, '\''
+      end
+    end
+
+    def verify_string_parameter (parameter)
+      if parameter
+        raise "unauthorized insert in string parameter" if parameter.downcase.include? "insert"
+        raise "unauthorized delete in string parameter" if parameter.downcase.include? "delete"
+      end
+    end
   end
 end
