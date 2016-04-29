@@ -63,19 +63,20 @@ module SinatraTemplate
       if parameter and parameter.is_a? String
         parameter.gsub(/[\\"']/){|s|'\\'+s}
       end
-  end
+    end
 
-  def verify_string_parameter (parameter)
-    if parameter  and parameter.is_a? String
-      raise "unauthorized insert in string parameter" if parameter.downcase.include? "insert"
-      raise "unauthorized delete in string parameter" if parameter.downcase.include? "delete"
-      raise "unauthorized load in string parameter" if parameter.downcase.include? "load"
-      raise "unauthorized clear in string parameter" if parameter.downcase.include? "clear"
-      raise "unauthorized create in string parameter" if parameter.downcase.include? "create"
-      raise "unauthorized drop in string parameter" if parameter.downcase.include? "drop"
-      raise "unauthorized copy in string parameter" if parameter.downcase.include? "copy"
-      raise "unauthorized move in string parameter" if parameter.downcase.include? "move"
-      raise "unauthorized add in string parameter" if parameter.downcase.include? "add"
+    def verify_string_parameter (parameter)
+      if parameter  and parameter.is_a? String
+        raise "unauthorized insert in string parameter" if parameter.downcase.include? "insert"
+        raise "unauthorized delete in string parameter" if parameter.downcase.include? "delete"
+        raise "unauthorized load in string parameter" if parameter.downcase.include? "load"
+        raise "unauthorized clear in string parameter" if parameter.downcase.include? "clear"
+        raise "unauthorized create in string parameter" if parameter.downcase.include? "create"
+        raise "unauthorized drop in string parameter" if parameter.downcase.include? "drop"
+        raise "unauthorized copy in string parameter" if parameter.downcase.include? "copy"
+        raise "unauthorized move in string parameter" if parameter.downcase.include? "move"
+        raise "unauthorized add in string parameter" if parameter.downcase.include? "add"
+      end
     end
   end
 end
