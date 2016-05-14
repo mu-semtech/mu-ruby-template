@@ -28,6 +28,7 @@ end
 include RDF
 MU = RDF::Vocabulary.new('http://mu.semte.ch/vocabularies/')
 MU_CORE = RDF::Vocabulary.new(MU.to_uri.to_s + 'core/')
+MU_EXT = RDF::Vocabulary.new(MU.to_uri.to_s + 'ext/')
 
 ###
 # Helpers
