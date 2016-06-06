@@ -1,4 +1,4 @@
-FROM erikap/ruby-sinatra:ruby-2.1-latest
+FROM erikap/ruby-sinatra:ruby2.3-latest
 
 MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
 
