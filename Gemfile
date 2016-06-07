@@ -3,9 +3,7 @@ source 'https://rubygems.org'
 gem 'sinatra', '1.4.7'
 
 gem 'bson', '4.0.0'
-gem 'rdf', '1.99.1'
-gem 'rdf-vocab', '~> 0.8.7'
-gem 'sparql-client', '1.99.0', require: 'sparql/client'
+gem 'linkeddata', '2.0.0'
 
 group :test, :development do
 	gem 'rspec', '~> 3.4'
