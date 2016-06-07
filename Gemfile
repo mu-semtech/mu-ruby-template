@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'sinatra', '1.4.6'
+gem 'sinatra', '1.4.7'
 
 gem 'bson', '4.0.0'
 gem 'rdf', '1.99.1'
