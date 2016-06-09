@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'pry' if development?
 require 'better_errors' if development?
 require 'logger'
 require 'sparql/client'
