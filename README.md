@@ -55,12 +55,12 @@ Validate whether the type specified in the JSON data is equal to the expected ty
 Returns a JSONAPI compliant error response with the given status code (default: `400`).
 
 #### query(query)
-Executes the given SPARQL select query.
+Executes the given SPARQL select/ask/construct query.
 
 #### update(query)
 Executes the given SPARQL update query.
 
-#### update_modified(subject, modified = DateTime.now.xmlschema)
+#### update_modified(subject, modified = DateTime.now)
 Executes a SPARQL query to update the modification date of the given subject URI (string). The date defaults to now.
 
 
@@ -79,3 +79,17 @@ You can now run your tests inside the container with:
 
     bundle install
     rspec -c
+
+## Experimental features
+#### sparql_escape()
+The Ruby templates extends the core classes `String`, `Date`, `Integer`, `Float` and `Boolean` with a `sparql_escape` method. This method can be used to avoid SPARQL injection by escaping user input while constructing a SPARQL query. E.g.
+
+```
+query =  " INSERT DATA {"
+query += "   GRAPH <#{settings.graph}> {"
+query += "     <#{user_uri}> a <#{RDF::Vocab::FOAF.Person}> ;"
+query += "                   <#{RDF::Vocab::FOAF.name}> #{name.sparql_escape} ;"
+query += "                   <#{RDF::Vocab::DC.created}> #{now.sparql_escape} ."
+query += "   }"
+query += " }"      
+```

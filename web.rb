@@ -8,6 +8,7 @@ require 'json'
 require 'rdf/vocab'
 require 'bson'
 require_relative 'sinatra_template/helpers.rb'
+require_relative 'lib/escape_helpers.rb'
 
 configure do
   set :graph, ENV['MU_APPLICATION_GRAPH']

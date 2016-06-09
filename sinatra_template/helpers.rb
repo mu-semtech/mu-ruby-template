@@ -41,7 +41,7 @@ module SinatraTemplate
       settings.sparql_client.update query
     end
   
-    def update_modified(subject, modified = DateTime.now.xmlschema)
+    def update_modified(subject, modified = DateTime.now)
       query =  " WITH <#{settings.graph}> "
       query += " DELETE {"
       query += "   <#{subject}> <#{RDF::Vocab::DC.modified}> ?modified ."
@@ -53,13 +53,15 @@ module SinatraTemplate
   
       query =  " INSERT DATA {"
       query += "   GRAPH <#{settings.graph}> {"
-      query += "     <#{subject}> <#{RDF::Vocab::DC.modified}> \"#{modified}\"^^xsd:dateTime ."
+      query += "     <#{subject}> <#{RDF::Vocab::DC.modified}> #{modified.sparql_escape} ."
       query += "   }"
       query += " }"
       update(query)
     end
-    
+
+    # <b>DEPRECATED:</b> Please use <tt>String.sparql_escape</tt> instead.
     def escape_string_parameter (parameter)
+      log.warn "escape_string_parameter is deprecated. Please use String.sparql_escape instead"
       if parameter and parameter.is_a? String
         parameter.gsub(/[\\"']/){|s|'\\'+s}
       end
