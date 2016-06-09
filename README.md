@@ -26,7 +26,7 @@ To use the template while developing your app, start a container in development 
     
 Changes will be automatically picked up by Sinatra.
 
-To get the [Better Errors](https://github.com/charliesome/better_errors) working, you need to configure the `TRUSTED_IP` environment variable with your host IP (see [Better Errors Security](https://github.com/charliesome/better_errors#security)). In case you're using Docker, this will probably be `TRUSTED_IP=172.17.0.1`.
+To get the [Better Errors](https://github.com/charliesome/better_errors) working, you need to access your microservice directly instead of going through the identifier and dispatcher. You can retrieve your microservice's IP address by running the command: `docker inspect {container-name} | grep -i ip`.
 
 ## Helper methods
 The template provides the user with several helper methods.

@@ -1,11 +1,11 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'better_errors' if development?
 require 'logger'
 require 'sparql/client'
 require 'json'
 require 'rdf/vocab'
 require 'bson'
-require 'better_errors'
 require_relative 'sinatra_template/helpers.rb'
 
 configure do

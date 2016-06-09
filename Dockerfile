@@ -6,6 +6,7 @@ ENV APP_ENTRYPOINT web.rb
 ENV LOG_LEVEL info
 ENV MU_SPARQL_ENDPOINT 'http://database:8890/sparql'
 ENV MU_APPLICATION_GRAPH 'http://mu.semte.ch/application'
+ENV TRUSTED_IP 0.0.0.0/0
 
 ADD . /usr/src/app
 
