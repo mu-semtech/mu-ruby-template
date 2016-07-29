@@ -13,7 +13,7 @@ Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (def
     # ONBUILD of mu-ruby-template takes care of everything
 
 ## Configuration
-The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environment variable. By default this is set to `http://database:8890/sparql`. In that case the triple store used in the backend should be linked to the login service container as `database`.
+The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environment variable. By default this is set to `http://database:8890/sparql`. In that case the triple store used in the backend should be linked to the microservice container as `database`.
 
 The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the triple store the microservice will work in. By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
