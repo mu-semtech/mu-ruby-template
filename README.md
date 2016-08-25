@@ -28,6 +28,9 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_TIMEOUT` is used to configure the timeout (in seconds) for SPARQL queries.
 
+- `MU_SPARQL_UPDATE_ENDPOINT` is used to override the update endpoint for
+  update queries (i.e. if you want to use Sesame)
+
 ## Develop a microservice using the template
 To use the template while developing your app, start a container in development mode with your code folder mounted in `/app`:
 

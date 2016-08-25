@@ -38,7 +38,7 @@ module SinatraTemplate
   
     def update(query)
       log.info "Executing query: #{query}"
-      settings.sparql_client.update query
+      settings.sparql_client.update query, { endpoint: settings.update_endpoint }
     end
   
     def update_modified(subject, modified = DateTime.now)
