@@ -81,4 +81,5 @@ module SinatraTemplate
       end
     end
   end
+  extend(self)
 end
