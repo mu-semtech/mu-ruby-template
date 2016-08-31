@@ -26,9 +26,7 @@ The template supports the following environment variables:
   - By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
 
-- `MU_SPARQL_TIMEOUT` is used to configure the timeout for SPARQL queries.
-
-The `MU_SPARQL_TIMEOUT` sets the timeout for SPARQL queries.
+- `MU_SPARQL_TIMEOUT` is used to configure the timeout (in seconds) for SPARQL queries.
 
 ## Develop a microservice using the template
 To use the template while developing your app, start a container in development mode with your code folder mounted in `/app`:
