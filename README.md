@@ -17,7 +17,7 @@ The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environme
 
 The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the triple store the microservice will work in. By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
-The MU_SPARQL_TIMEOUT sets the timeout for SPARQL queries.
+The `MU_SPARQL_TIMEOUT` sets the timeout for SPARQL queries.
 
 ## Develop a microservice using the template
 To use the template while developing your app, start a container in development mode with your code folder mounted in `/app`:
