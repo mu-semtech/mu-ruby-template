@@ -12,7 +12,11 @@ require_relative 'lib/escape_helpers.rb'
 
 configure do
   set :graph, ENV['MU_APPLICATION_GRAPH']
-  set :sparql_client, SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'])
+  options = {}
+  if ENV['MU_SPARQL_TIMEOUT']
+    options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
+  end
+  set :sparql_client, SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], options)
 
   ###
   # Logging

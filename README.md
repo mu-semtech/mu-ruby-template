@@ -17,13 +17,15 @@ The SPARQL endpoint can be configured through the `MU_SPARQL_ENDPOINT` environme
 
 The `MU_APPLICATION_GRAPH` environment variable specifies the graph in the triple store the microservice will work in. By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
+The `MU_SPARQL_TIMEOUT` sets the timeout for SPARQL queries.
+
 ## Develop a microservice using the template
 To use the template while developing your app, start a container in development mode with your code folder mounted in `/app`:
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=development
 	        -d semtech/mu-ruby-template:2.0.0-ruby2.3
-    
+
 Changes will be automatically picked up by Sinatra.
 
 To get the [Better Errors](https://github.com/charliesome/better_errors) working, you need to access your microservice directly instead of going through the identifier and dispatcher. You can retrieve your microservice's IP address by running the command: `docker inspect {container-name} | grep -i ip`.
@@ -74,7 +76,7 @@ To run the tests while developing, start an interactive container in the test en
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
                 -it semtech/mu-ruby-template:1.2.0-ruby2.1 /bin/bash
-    
+
 You can now run your tests inside the container with:
 
     bundle install
