@@ -16,20 +16,13 @@ Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (def
 
 The template supports the following environment variables:
 
-- `MU_SPARQL_ENDPOINT` is used to configure the SPARQL endpoint.
+- `MU_SPARQL_ENDPOINT`: SPARQL read endpoint URL. Default: `http://database:8890/sparql` (the triple store should be linked as `database` to the microservice).
 
-  - By default this is set to `http://database:8890/sparql`. In that case the triple store used in the backend should be linked to the microservice container as `database`.
+- `MU_SPARQL_UPDATE_ENDPOINT`: SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Defaults to `/sparql`.
 
+- `MU_APPLICATION_GRAPH`: configuration of the graph in the triple store the microservice will work in. Default: `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
-- `MU_APPLICATION_GRAPH` specifies the graph in the triple store the microservice will work in.
-
-  - By default this is set to `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
-
-
-- `MU_SPARQL_TIMEOUT` is used to configure the timeout (in seconds) for SPARQL queries.
-
-- `MU_SPARQL_UPDATE_ENDPOINT` is used to override the update endpoint for
-  update queries (i.e. if you want to use Sesame). Note this should be a path relative to the base of MU_SPARQL_ENDPOINT!
+- `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
 
 ## Develop a microservice using the template
 To use the template while developing your app, start a container in development mode with your code folder mounted in `/app`:
