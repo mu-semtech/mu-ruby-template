@@ -19,7 +19,7 @@ configure do
     options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
   end
   set :sparql_client, SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], options)
-  set :update_endpoint, ENV['MU_SPARQL_UPDATE_ENDPOINT'] || ENV['MU_SPARQL_ENDPOINT']
+  set :update_endpoint, ENV['MU_SPARQL_UPDATE_ENDPOINT'] || RDF::URI.new(ENV['MU_SPARQL_ENDPOINT']).request_uri
 
   ###
   # Logging
