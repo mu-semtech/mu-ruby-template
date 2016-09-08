@@ -8,7 +8,7 @@ Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (def
 
 ## Example Dockerfile
 
-    FROM semtech/mu-ruby-template:2.0.0-ruby2.3
+    FROM semtech/mu-ruby-template:2.3.0-ruby2.3
     MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
     # ONBUILD of mu-ruby-template takes care of everything
 
@@ -18,7 +18,7 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_ENDPOINT`: SPARQL read endpoint URL. Default: `http://database:8890/sparql` (the triple store should be linked as `database` to the microservice).
 
-- `MU_SPARQL_UPDATE_ENDPOINT`: SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Defaults to `/sparql`.
+- `MU_SPARQL_UPDATE_ENDPOINT`: SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Default: `/sparql`.
 
 - `MU_APPLICATION_GRAPH`: configuration of the graph in the triple store the microservice will work in. Default: `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
@@ -29,7 +29,7 @@ To use the template while developing your app, start a container in development 
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=development
-	        -d semtech/mu-ruby-template:2.0.0-ruby2.3
+	        -d semtech/mu-ruby-template:2.3.0-ruby2.3
 
 Changes will be automatically picked up by Sinatra.
 
@@ -80,7 +80,7 @@ To run the tests while developing, start an interactive container in the test en
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
-                -it semtech/mu-ruby-template:1.2.0-ruby2.1 /bin/bash
+                -it semtech/mu-ruby-template:2.3.0-ruby2.3 /bin/bash
 
 You can now run your tests inside the container with:
 
