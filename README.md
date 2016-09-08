@@ -18,8 +18,6 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_ENDPOINT`: SPARQL read endpoint URL. Default: `http://database:8890/sparql` (the triple store should be linked as `database` to the microservice).
 
-- `MU_SPARQL_UPDATE_ENDPOINT`: SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Default: `/sparql`.
-
 - `MU_APPLICATION_GRAPH`: configuration of the graph in the triple store the microservice will work in. Default: `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
 
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
@@ -88,6 +86,9 @@ You can now run your tests inside the container with:
     rspec -c
 
 ## Experimental features
+#### MU_SPARQL_UPDATE_ENDPOINT environment variable
+Configure the SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Default: `/sparql`.
+
 #### sparql_escape()
 The Ruby templates extends the core classes `String`, `Date`, `Integer`, `Float` and `Boolean` with a `sparql_escape` method. This method can be used to avoid SPARQL injection by escaping user input while constructing a SPARQL query. E.g.
 
