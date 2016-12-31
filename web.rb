@@ -4,32 +4,18 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'pry' if development?
 require 'better_errors' if development?
-require 'logger'
-require 'sparql/client'
 require 'json'
 require 'rdf/vocab'
-require 'bson'
 require_relative 'sinatra_template/helpers.rb'
-require_relative 'lib/escape_helpers.rb'
+require_relative 'sinatra_template/utils.rb'
+
+include SinatraTemplate::Utils
 
 configure do
-  set :graph, ENV['MU_APPLICATION_GRAPH']
-  options = {}
-  if ENV['MU_SPARQL_TIMEOUT']
-    options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
-  end
-  set :sparql_client, SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], options)
-  set :update_endpoint, ENV['MU_SPARQL_UPDATE_ENDPOINT'] || RDF::URI.new(ENV['MU_SPARQL_ENDPOINT']).request_uri
-
-  ###
-  # Logging
-  ###
-  log_dir = '/logs'
-  Dir.mkdir(log_dir) unless Dir.exist?(log_dir)
-  # Keep 10 log files of 100 MB in size
-  log = Logger.new("#{log_dir}/#{settings.environment}.log", 10, 100*1024*1024)
-  log.level = Kernel.const_get("Logger::#{ENV['LOG_LEVEL'].upcase}")
-  set :log, log
+  set :graph, graph
+  set :sparql_client, sparql_client
+  set :update_endpoint, update_endpoint
+  set :log, SinatraTemplate::Utils.log
 end
 
 configure :development do
@@ -43,7 +29,6 @@ end
 ###
 # Vocabularies
 ###
-
 include RDF
 MU = RDF::Vocabulary.new('http://mu.semte.ch/vocabularies/')
 MU_CORE = RDF::Vocabulary.new(MU.to_uri.to_s + 'core/')
@@ -55,7 +40,8 @@ SERVICE_RESOURCE_BASE = 'http://mu.semte.ch/services/'
 ###
 # Helpers
 ###
-
 helpers SinatraTemplate::Helpers
+
+
 app_file = ENV['APP_ENTRYPOINT']
 require_relative "ext/#{app_file}"

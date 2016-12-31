@@ -1,25 +1,23 @@
+require 'bson'
+require 'logger'
+require 'sparql/client'
+require_relative './utils.rb'
+
 module SinatraTemplate
   module Helpers
-    def generate_uuid
-      BSON::ObjectId.new.to_s
-    end
-  
-    def log
-      settings.log
-    end
-  
+
     def session_id_header(request)
-      log.debug "Get HTTP_MU_SESSION_ID request header from #{request.env.inspect}"
+      SinatraTemplate::Utils.log.debug "Get HTTP_MU_SESSION_ID request header from #{request.env.inspect}"
       request.env['HTTP_MU_SESSION_ID']
     end
   
     def rewrite_url_header(request)
-      log.debug "Get HTTP_X_REWRITE_URL request header from #{request.env.inspect}"
+      SinatraTemplate::Utils.log.debug "Get HTTP_X_REWRITE_URL request header from #{request.env.inspect}"
       request.env['HTTP_X_REWRITE_URL']
     end
   
     def error(title, status = 400)
-      log.error "HTTP status #{status}: #{title}"
+      SinatraTemplate::Utils.log.error "HTTP status #{status}: #{title}"
       halt status, { errors: [{ title: title }] }.to_json
     end
   
@@ -30,56 +28,6 @@ module SinatraTemplate
     def validate_resource_type(expected_type, data)
       error("Incorrect type. Type must be #{expected_type}, instead of #{data['type']}.", 409) if data['type'] != expected_type
     end
-  
-    def query(query)
-      log.info "Executing query: #{query}"
-      settings.sparql_client.query query
-    end
-  
-    def update(query)
-      log.info "Executing query: #{query}"
-      settings.sparql_client.update query, { endpoint: settings.update_endpoint }
-    end
-  
-    def update_modified(subject, modified = DateTime.now)
-      query =  " WITH <#{settings.graph}> "
-      query += " DELETE {"
-      query += "   <#{subject}> <#{RDF::Vocab::DC.modified}> ?modified ."
-      query += " }"
-      query += " WHERE {"
-      query += "   <#{subject}> <#{RDF::Vocab::DC.modified}> ?modified ."
-      query += " }"
-      update(query)
-  
-      query =  " INSERT DATA {"
-      query += "   GRAPH <#{settings.graph}> {"
-      query += "     <#{subject}> <#{RDF::Vocab::DC.modified}> #{modified.sparql_escape} ."
-      query += "   }"
-      query += " }"
-      update(query)
-    end
 
-    # <b>DEPRECATED:</b> Please use <tt>String.sparql_escape</tt> instead.
-    def escape_string_parameter (parameter)
-      log.warn "escape_string_parameter is deprecated. Please use String.sparql_escape instead"
-      if parameter and parameter.is_a? String
-        parameter.gsub(/[\\"']/){|s|'\\'+s}
-      end
-    end
-
-    def verify_string_parameter (parameter)
-      if parameter  and parameter.is_a? String
-        raise "unauthorized insert in string parameter" if parameter.downcase.include? "insert"
-        raise "unauthorized delete in string parameter" if parameter.downcase.include? "delete"
-        raise "unauthorized load in string parameter" if parameter.downcase.include? "load"
-        raise "unauthorized clear in string parameter" if parameter.downcase.include? "clear"
-        raise "unauthorized create in string parameter" if parameter.downcase.include? "create"
-        raise "unauthorized drop in string parameter" if parameter.downcase.include? "drop"
-        raise "unauthorized copy in string parameter" if parameter.downcase.include? "copy"
-        raise "unauthorized move in string parameter" if parameter.downcase.include? "move"
-        raise "unauthorized add in string parameter" if parameter.downcase.include? "add"
-      end
-    end
   end
-  extend(self)
 end

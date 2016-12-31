@@ -18,7 +18,7 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_ENDPOINT`: SPARQL read endpoint URL. Default: `http://database:8890/sparql` (the triple store should be linked as `database` to the microservice).
 
-- `MU_APPLICATION_GRAPH`: configuration of the graph in the triple store the microservice will work in. Default: `http://mu.semte.ch/application`. The graph name can be used in the service via `settings.graph`.
+- `MU_APPLICATION_GRAPH`: configuration of the graph in the triple store the microservice will work in. Default: `http://mu.semte.ch/application`. The graph name can be used in the service via the `graph` helper method.
 
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
 
@@ -34,21 +34,16 @@ Changes will be automatically picked up by Sinatra.
 To get the [Better Errors](https://github.com/charliesome/better_errors) working, you need to access your microservice directly instead of going through the identifier and dispatcher. You can retrieve your microservice's IP address by running the command: `docker inspect {container-name} | grep -i ip`.
 
 ## Helper methods
-The template provides the user with several helper methods.
+The template provides the user with several helper methods in Sinatra. These helpers cannot be used outside the Sinatra context.
 
-#### log
-The template provides a `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
-
-Logs are written to the `/logs` directory in the docker container.
-
-#### generate_uuid()
-Generate a random UUID (String).
-
-#### session_id_header(request)
-Get the session id from the request headers.
+#### error(title, status = 400)
+Returns a JSONAPI compliant error response with the given status code (default: `400`).
 
 #### rewrite_url_header(request)
 Get the rewrite URL from the request headers.
+
+#### session_id_header(request)
+Get the session id from the request headers.
 
 #### validate_json_api_content_type(request)
 Validate whether the Content-Type header contains the JSONAPI Content-Type. Returns a `400` otherwise.
@@ -56,11 +51,32 @@ Validate whether the Content-Type header contains the JSONAPI Content-Type. Retu
 #### validate_resource_type(expected_type, data)
 Validate whether the type specified in the JSON data is equal to the expected type. Returns a `409` otherwise.
 
-#### error(title, status = 400)
-Returns a JSONAPI compliant error response with the given status code (default: `400`).
+## Utils
+The template provides several utils that are automatically included in the Sinatra application (`web.rb`), but they can also be used outside the Sinatra context. Just include the `SinatraTemplate::Utils` module in your file. 
+
+```
+require_relative '/usr/src/app/sinatra_template/utils.rb'
+include SinatraTemplate::Utils
+```
+
+The following methods are provided:
+
+#### graph
+Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
+
+#### generate_uuid()
+Generate a random UUID (String).
+
+#### log
+The template provides a `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
+
+Logs are written to the `/logs` directory in the docker container.
 
 #### query(query)
 Executes the given SPARQL select/ask/construct query.
+
+#### sparql_client
+Returns a SPARQL::Client instance connection to the SPARQL endpoint configured through the `MU_SPARQL_ENDPOINT` environment variable.
 
 #### update(query)
 Executes the given SPARQL update query.
@@ -87,7 +103,7 @@ You can now run your tests inside the container with:
 
 ## Experimental features
 #### MU_SPARQL_UPDATE_ENDPOINT environment variable
-Configure the SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Default: `/sparql`.
+Configure the SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Default: `/sparql`. The update endpoint can be retrieved via the `update_endpoint` helper method.
 
 #### sparql_escape()
 The Ruby templates extends the core classes `String`, `Date`, `Integer`, `Float` and `Boolean` with a `sparql_escape` method. This method can be used to avoid SPARQL injection by escaping user input while constructing a SPARQL query. E.g.
