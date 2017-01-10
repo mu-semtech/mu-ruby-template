@@ -22,8 +22,7 @@ module SinatraTemplate
       if @log.nil?
         log_dir = '/logs'
         Dir.mkdir(log_dir) unless Dir.exist?(log_dir)
-        # Keep 10 log files of 100 MB in size
-        @log = Logger.new("#{log_dir}/#{ENV['RACK_ENV']}.log", 10, 100*1024*1024)
+        @log = Logger.new("#{log_dir}/application.log")
         @log.level = Kernel.const_get("Logger::#{ENV['LOG_LEVEL'].upcase}")
       end
       @log

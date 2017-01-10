@@ -12,6 +12,9 @@ ADD . /usr/src/app
 
 RUN ln -s /app /usr/src/app/ext \
      && ln -s /app/spec /usr/src/app/spec/ext \
+     && mkdir /logs \
+     && touch /logs/application.log \
+     && ln -sf /dev/stdout /logs/application.log \
      && cd /usr/src/app \
      && bundle install
 
