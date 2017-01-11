@@ -39,28 +39,6 @@ The template provides the user with several helper methods in Sinatra. These hel
 #### error(title, status = 400)
 Returns a JSONAPI compliant error response with the given status code (default: `400`).
 
-#### rewrite_url_header(request)
-Get the rewrite URL from the request headers.
-
-#### session_id_header(request)
-Get the session id from the request headers.
-
-#### validate_json_api_content_type(request)
-Validate whether the Content-Type header contains the JSONAPI Content-Type. Returns a `400` otherwise.
-
-#### validate_resource_type(expected_type, data)
-Validate whether the type specified in the JSON data is equal to the expected type. Returns a `409` otherwise.
-
-## Utils
-The template provides several utils that are automatically included in the Sinatra application (`web.rb`), but they can also be used outside the Sinatra context. Just include the `SinatraTemplate::Utils` module in your file. 
-
-```
-require_relative '/usr/src/app/sinatra_template/utils.rb'
-include SinatraTemplate::Utils
-```
-
-The following methods are provided:
-
 #### graph
 Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
 
@@ -68,12 +46,18 @@ Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
 Generate a random UUID (String).
 
 #### log
-The template provides a `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
+The template provides a [Logger](https://ruby-doc.org/stdlib-2.3.0/libdoc/logger/rdoc/Logger.html) `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
 
-Logs are written to the `/logs` directory in the docker container.
+Logs are written to the `/logs` directory and `STDOUT` in the docker container.
 
 #### query(query)
 Executes the given SPARQL select/ask/construct query.
+
+#### rewrite_url_header(request)
+Get the rewrite URL from the request headers.
+
+#### session_id_header(request)
+Get the session id from the request headers.
 
 #### sparql_client
 Returns a SPARQL::Client instance connection to the SPARQL endpoint configured through the `MU_SPARQL_ENDPOINT` environment variable.
@@ -83,6 +67,30 @@ Executes the given SPARQL update query.
 
 #### update_modified(subject, modified = DateTime.now)
 Executes a SPARQL query to update the modification date of the given subject URI (string). The date defaults to now.
+
+#### validate_json_api_content_type(request)
+Validate whether the Content-Type header contains the JSONAPI Content-Type. Returns a `400` otherwise.
+
+#### validate_resource_type(expected_type, data)
+Validate whether the type specified in the JSON data is equal to the expected type. Returns a `409` otherwise.
+
+
+## Helpers outside the Sinatra context
+The template provides several helpers that are automatically included in the Sinatra application (`web.rb`), but some of them can also be used outside the Sinatra context. Just include the `SinatraTemplate::Utils` module in your file. 
+
+```
+require_relative '/usr/src/app/sinatra_template/utils.rb'
+include SinatraTemplate::Utils
+```
+
+The following [helper methods](https://github.com/mu-semtech/mu-ruby-template#helper-methods) are provided:
+* graph
+* generate_uuid
+* log
+* query(query)
+* sparql_client
+* update(query)
+* update_modified(subject, modified = DateTime.now)
 
 
 ## Writing tests for your microservice
