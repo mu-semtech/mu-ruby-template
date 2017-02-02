@@ -16,6 +16,11 @@ configure do
   set :sparql_client, sparql_client
   set :update_endpoint, update_endpoint
   set :log, SinatraTemplate::Utils.log
+  before '*' do
+    # NOTE: all requests will defaults to no-cache like other frameworks like Hapi.
+    #       Every endpoint can still override this behavior separately.
+    response.headers['Cache-Control'] = 'no-cache'
+  end if ENV['NO_CACHE_CONTROL'].nil?
 end
 
 configure :development do
