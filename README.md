@@ -34,7 +34,7 @@ Changes will be automatically picked up by Sinatra.
 To get the [Better Errors](https://github.com/charliesome/better_errors) working, you need to access your microservice directly instead of going through the identifier and dispatcher. You can retrieve your microservice's IP address by running the command: `docker inspect {container-name} | grep -i ip`.
 
 ## Helper methods
-The template provides the user with several helper methods in Sinatra. These helpers cannot be used outside the Sinatra context.
+The template provides the user with several helper methods in Sinatra. Some helpers cannot be used outside the Sinatra context.
 
 #### error(title, status = 400)
 Returns a JSONAPI compliant error response with the given status code (default: `400`).
@@ -44,6 +44,9 @@ Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
 
 #### generate_uuid()
 Generate a random UUID (String).
+
+#### @json_body
+The parsed JSON body of the request.
 
 #### log
 The template provides a [Logger](https://ruby-doc.org/stdlib-2.3.0/libdoc/logger/rdoc/Logger.html) `log` object to the user for logging. Just do `log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).

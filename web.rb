@@ -11,7 +11,7 @@ require_relative 'sinatra_template/utils.rb'
 
 include SinatraTemplate::Utils
 
-configure do
+configure do # backwards compatibility
   set :graph, graph
   set :sparql_client, sparql_client
   set :update_endpoint, update_endpoint
@@ -43,5 +43,20 @@ SERVICE_RESOURCE_BASE = 'http://mu.semte.ch/services/'
 helpers SinatraTemplate::Helpers
 
 
+###
+# Hooks
+###
+before do
+  begin
+    request.body.rewind
+    @json_body = JSON.parse request.body.read
+  rescue
+    # request doesn't have a JSON body. Do nothing.
+  end
+end
+
+###
+# Include extension code
+###
 app_file = ENV['APP_ENTRYPOINT']
 require_relative "ext/#{app_file}"
