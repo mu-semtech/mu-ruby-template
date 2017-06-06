@@ -1,10 +1,24 @@
+require 'uri'
+
 class String
   def sparql_escape
     '"' + self.gsub(/[\\"']/) { |s| '\\' + s } + '"'
   end
 end
 
+class URI::Generic
+  def sparql_escape
+    '<' + self.to_s.gsub(/[\\"']/) { |s| '\\' + s } + '>'
+  end
+end
+
 class Date
+  def sparql_escape
+    '"' + self.xmlschema + '"^^xsd:date'
+  end
+end
+
+class DateTime
   def sparql_escape
     '"' + self.xmlschema + '"^^xsd:dateTime'
   end

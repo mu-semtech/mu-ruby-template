@@ -65,6 +65,21 @@ Get the session id from the request headers.
 #### sparql_client
 Returns a SPARQL::Client instance connection to the SPARQL endpoint configured through the `MU_SPARQL_ENDPOINT` environment variable.
 
+#### sparql_escape ; sparql_escape_{string|uri|date|datetime|bool|int|float}(value)
+The Ruby templates extends the core classes `String`, `Date`, `DateTime`, `Time`, `Integer`, `Float`, `Boolean` and `URI` with a `sparql_escape` method. This method can be used to avoid SPARQL injection by escaping user input while constructing a SPARQL query. E.g.
+
+```
+query =  " INSERT DATA {"
+query += "   GRAPH <#{settings.graph}> {"
+query += "     <#{user_uri}> a <#{RDF::Vocab::FOAF.Person}> ;"
+query += "                   <#{RDF::Vocab::FOAF.name}> #{name.sparql_escape} ;"
+query += "                   <#{RDF::Vocab::DC.created}> #{now.sparql_escape} ."
+query += "   }"
+query += " }"
+```
+
+Next to the extensions, the template also provides a helper function per datatype that takes any value as parameter. E.g. `sparql_escape_uri("http://mu.semte.ch/application")`.
+
 #### update(query)
 Executes the given SPARQL update query.
 
@@ -115,16 +130,3 @@ You can now run your tests inside the container with:
 ## Experimental features
 #### MU_SPARQL_UPDATE_ENDPOINT environment variable
 Configure the SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Default: `/sparql`. The update endpoint can be retrieved via the `update_endpoint` helper method.
-
-#### sparql_escape()
-The Ruby templates extends the core classes `String`, `Date`, `Integer`, `Float` and `Boolean` with a `sparql_escape` method. This method can be used to avoid SPARQL injection by escaping user input while constructing a SPARQL query. E.g.
-
-```
-query =  " INSERT DATA {"
-query += "   GRAPH <#{settings.graph}> {"
-query += "     <#{user_uri}> a <#{RDF::Vocab::FOAF.Person}> ;"
-query += "                   <#{RDF::Vocab::FOAF.name}> #{name.sparql_escape} ;"
-query += "                   <#{RDF::Vocab::DC.created}> #{now.sparql_escape} ."
-query += "   }"
-query += " }"      
-```

@@ -2,6 +2,7 @@ require 'bson'
 require 'logger'
 require 'rdf/vocab'
 require 'sparql/client'
+require 'uri'
 require_relative '../lib/escape_helpers.rb'
 
 module SinatraTemplate
@@ -42,6 +43,34 @@ module SinatraTemplate
         @sparql_client = SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], options)
       end
       @sparql_client
+    end
+
+    def sparql_escape_string(value)
+      value ? value.to_s.sparql_escape : value
+    end
+
+    def sparql_escape_uri(value)
+      value ? URI.parse(value).sparql_escape : value
+    end
+
+    def sparql_escape_int(value)
+      value ? value.to_i.sparql_escape : value
+    end
+
+    def sparql_escape_float(value)
+      value ? value.to_f.sparql_escape : value
+    end
+
+    def sparql_escape_bool(value)
+      value ? true.sparql_escape : false.sparql_escape
+    end
+
+    def sparql_escape_date(value)
+      value ? Date.parse(value).sparql_escape : value
+    end
+
+    def sparql_escape_datetime(value)
+      value ? DateTime.parse(value).sparql_escape : value
     end
 
     def update(query)
