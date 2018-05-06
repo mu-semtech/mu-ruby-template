@@ -6,11 +6,16 @@ Extend the `semtech/mu-ruby-template` and set a maintainer. That's it.
 
 Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (default: `web.rb`). You can use the Gemfile as you would expect.
 
-## Example Dockerfile
+### Example Dockerfile
 
     FROM semtech/mu-ruby-template:2.6.0-ruby2.3
-    MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
+    LABEL maintainer="erika.pauwels@gmail.com"
     # ONBUILD of mu-ruby-template takes care of everything
+
+### Versions
+The following versions of the mu-ruby-template are available:
+* 2.6.0 ; 2.7.0-ruby2.3
+* 1.3.1-ruby2.1
 
 ## Configuration
 

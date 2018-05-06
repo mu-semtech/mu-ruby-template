@@ -1,6 +1,6 @@
-FROM erikap/ruby-sinatra:ruby2.3-latest
+FROM erikap/ruby-sinatra:1.0.0 # ruby 2.5
 
-MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
+LABEL maintainer="erika.pauwels@gmail.com"
 
 ENV APP_ENTRYPOINT web.rb
 ENV LOG_LEVEL info
