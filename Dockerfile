@@ -1,4 +1,4 @@
-FROM erikap/ruby-sinatra:1.0.0 # ruby 2.5
+FROM erikap/ruby-sinatra:1.0.0
 
 LABEL maintainer="erika.pauwels@gmail.com"
 

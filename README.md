@@ -8,13 +8,14 @@ Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (def
 
 ### Example Dockerfile
 
-    FROM semtech/mu-ruby-template:2.6.0-ruby2.3
+    FROM semtech/mu-ruby-template:2.7.0
     LABEL maintainer="erika.pauwels@gmail.com"
     # ONBUILD of mu-ruby-template takes care of everything
 
 ### Versions
 The following versions of the mu-ruby-template are available:
-* 2.6.0 ; 2.7.0-ruby2.3
+* 2.7.0 ; 2.7.0-ruby2.5
+* 2.6.0 ; 2.6.0-ruby2.3
 * 1.3.1-ruby2.1
 
 ## Configuration
@@ -32,7 +33,7 @@ To use the template while developing your app, start a container in development 
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=development
-	        -d semtech/mu-ruby-template:2.6.0-ruby2.3
+	        -d semtech/mu-ruby-template:2.7.0
 
 Changes will be automatically picked up by Sinatra.
 
@@ -125,7 +126,7 @@ To run the tests while developing, start an interactive container in the test en
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
-                -it semtech/mu-ruby-template:2.6.0-ruby2.3 /bin/bash
+                -it semtech/mu-ruby-template:2.7.0 /bin/bash
 
 You can now run your tests inside the container with:
 
