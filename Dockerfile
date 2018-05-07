@@ -19,5 +19,11 @@ RUN ln -s /app /usr/src/app/ext \
      && bundle install
 
 ONBUILD ADD . /app/
+ONBUILD RUN if [ -f /app/on-build.sh ]; \
+     then \
+        echo "Running custom on-build.sh of child" \
+        && chmod +x /app/on-build.sh \
+        && /bin/bash /app/on-build.sh ;\
+     fi
 ONBUILD RUN cd /usr/src/app \
      && bundle install

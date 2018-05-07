@@ -28,6 +28,8 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
 
+- `LOG_LEVEL`: the level of logging (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
+
 ## Developing with the template
 Livereload is enabled automatically when running in development mode.  You can embed the template easily in a running mu.semte.ch stack by launching it in the `docker-compose.yml` with the correct links.  If desired, pry and Better Errors can be used during development, giving advanced ruby debugging features.
 
@@ -156,6 +158,9 @@ You can now run your tests inside the container with:
 
     bundle install
     rspec -c
+
+## Custom build commands
+To execute custom bash statements during the image build (e.g. to install aditional system libraries), provide an `on-build.sh` script in the root of your service. It will be automatically picked up and executed by the Docker build.
 
 ## Experimental features
 #### MU_SPARQL_UPDATE_ENDPOINT environment variable
