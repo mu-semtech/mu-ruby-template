@@ -28,16 +28,40 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
 
-## Develop a microservice using the template
-To use the template while developing your app, start a container in development mode with your code folder mounted in `/app`:
+## Developing with the template
+Livereload is enabled automatically when running in development mode.  You can embed the template easily in a running mu.semte.ch stack by launching it in the `docker-compose.yml` with the correct links.  If desired, pry and Better Errors can be used during development, giving advanced ruby debugging features.
 
-    docker run --volume /path/to/your/code:/app
-                -e RACK_ENV=development
-	        -d semtech/mu-ruby-template:2.7.0
+### Live reload
+When developing, you can use the template image, mount the volume with your sources in `/app` and add a link to the database. Set the `RACK_ENV` environment variable to `development`. The service will live-reload on changes. You'll need to restart the container when you define additional dependencies in your `Gemfile`.
 
-Changes will be automatically picked up by Sinatra.
+    docker run --link virtuoso:database \
+           -v `pwd`:/app \
+           -p 8888:80 \
+           -e RACK_ENV=development \
+           --name my-js-test \
+           semtech/mu-ruby-template:2.7.0
 
-To get the [Better Errors](https://github.com/charliesome/better_errors) working, you need to access your microservice directly instead of going through the identifier and dispatcher. You can retrieve your microservice's IP address by running the command: `docker inspect {container-name} | grep -i ip`.
+### Develop in mu.semte.ch stack
+When developing inside an existing mu.semte.ch stack, it is easiest to set the development mode and mount the sources directly.  This makes it easy to setup links to the database and the dispatcher.
+
+Optionally, you can publish the microservice on a different port, so you can access it directly without the dispatcher.  In the example below, port 8888 is used to access the service directly.  We set the path to our sources directly, ensuring we can develop the microservice in its original place.
+
+    yourMicroserviceName:
+      image: semtech/mu-ruby-template:2.7.0
+      ports:
+        - 8888:80
+      environment:
+        RACK_ENV: "development"
+      links:
+        - db:database
+      volumes:
+        - /absolute/path/to/your/sources/:/app/
+
+
+### Debugging with pry and Better Errors
+Add a breakpoint in your code by inserting a `binding.pry` statement. 
+
+When an error occurs, an interactive [Better Errors](https://github.com/charliesome/better_errors) error page is available at `http://{container-ip}/__better_errors`. It's important to access the error page via the container's IP directly and not through localhost, identifier, dispatcher, etc.
 
 ## Helper methods
 The template provides the user with several helper methods in Sinatra. Some helpers cannot be used outside the Sinatra context.
