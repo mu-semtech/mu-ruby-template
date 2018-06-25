@@ -68,10 +68,10 @@ end
 
 after do
   auth_headers = {}
-  if auth_headers['MU_AUTH_ALLOWED_GROUPS']
+  if RequestStore.store[:mu_auth_allowed_groups]
     auth_headers['MU_AUTH_ALLOWED_GROUPS'] = RequestStore.store[:mu_auth_allowed_groups]
   end
-  if auth_headers['MU_AUTH_USED_GROUPS']
+  if RequestStore.store[:mu_auth_used_groups]
     auth_headers['MU_AUTH_USED_GROUPS'] = RequestStore.store[:mu_auth_used_groups]
   end
   headers auth_headers
