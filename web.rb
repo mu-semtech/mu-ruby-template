@@ -6,6 +6,7 @@ require 'pry' if development?
 require 'better_errors' if development?
 require 'json'
 require 'rdf/vocab'
+require 'request_store'
 require_relative 'sinatra_template/helpers.rb'
 require_relative 'sinatra_template/utils.rb'
 
@@ -53,6 +54,27 @@ before do
   rescue
     # request doesn't have a JSON body. Do nothing.
   end
+  begin
+    if session_id_header(request)
+      RequestStore.store[:mu_session_id] = session_id_header(request)
+      RequestStore.store[:mu_call_id] = request.env['HTTP_MU_CALL_ID']
+      RequestStore.store[:mu_auth_allowed_groups] = request.env['HTTP_MU_AUTH_ALLOWED_GROUPS']
+      RequestStore.store[:mu_auth_used_groups] = request.env['HTTP_MU_AUTH_USED_GROUPS']
+    end
+  rescue e
+    log.error e
+  end
+end
+
+after do
+  auth_headers = {}
+  if auth_headers['MU_AUTH_ALLOWED_GROUPS']
+    auth_headers['MU_AUTH_ALLOWED_GROUPS'] = RequestStore.store[:mu_auth_allowed_groups]
+  end
+  if auth_headers['MU_AUTH_USED_GROUPS']
+    auth_headers['MU_AUTH_USED_GROUPS'] = RequestStore.store[:mu_auth_used_groups]
+  end
+  headers auth_headers
 end
 
 ###

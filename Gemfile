@@ -5,6 +5,7 @@ gem 'sinatra-contrib', '1.4.7'
 
 gem 'bson', '4.0.0'
 gem 'linkeddata', '2.0.0'
+gem 'request_store', '1.4.1'
 
 group :test, :development do
   gem 'rspec', '~> 3.4'
