@@ -42,7 +42,7 @@ SERVICE_RESOURCE_BASE = 'http://mu.semte.ch/services/'
 # Helpers
 ###
 helpers SinatraTemplate::Helpers
-
+use RequestStore::Middleware
 
 ###
 # Hooks
@@ -61,7 +61,7 @@ before do
       RequestStore.store[:mu_auth_allowed_groups] = request.env['HTTP_MU_AUTH_ALLOWED_GROUPS']
       RequestStore.store[:mu_auth_used_groups] = request.env['HTTP_MU_AUTH_USED_GROUPS']
     end
-  rescue e
+  rescue Exception => e
     log.error e
   end
 end
@@ -69,10 +69,10 @@ end
 after do
   auth_headers = {}
   if RequestStore.store[:mu_auth_allowed_groups]
-    auth_headers['MU_AUTH_ALLOWED_GROUPS'] = RequestStore.store[:mu_auth_allowed_groups]
+    auth_headers['mu-auth-allowed-groups'] = RequestStore.store[:mu_auth_allowed_groups]
   end
   if RequestStore.store[:mu_auth_used_groups]
-    auth_headers['MU_AUTH_USED_GROUPS'] = RequestStore.store[:mu_auth_used_groups]
+    auth_headers['mu-auth-used-groups'] = RequestStore.store[:mu_auth_used_groups]
   end
   headers auth_headers
 end

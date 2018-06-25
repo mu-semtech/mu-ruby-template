@@ -13,13 +13,13 @@ module SinatraTemplate
       # @return [Net::HTTPResponse]
       # @see    http://www.w3.org/TR/sparql11-protocol/#query-operation
       def request(query, headers = {}, &block)
-        headers['MU_SESSION_ID'] = RequestStore.store[:mu_session_id]
-        headers['MU_CALL_ID'] = RequestStore.store[:mu_call_id]
-        headers['MU_AUTH_ALLOWED_GROUPS'] = RequestStore.store[:mu_auth_allowed_groups]
-        headers['MU_AUTH_USED_GROUPS'] = RequestStore.store[:mu_auth_used_groups]
+        headers['mu-session-id'] = RequestStore.store[:mu_session_id]
+        headers['mu-call-id'] = RequestStore.store[:mu_call_id]
+        headers['mu-auth-allowed-groups'] = RequestStore.store[:mu_auth_allowed_groups]
+        headers['mu-auth-used-groups'] = RequestStore.store[:mu_auth_used_groups]
         response = super
-        RequestStore.store[:mu_auth_allowed_groups] = response['MU_AUTH_ALLOWED_GROUPS']
-        RequestStore.store[:mu_auth_used_groups] = response['MU_AUTH_USED_GROUPS']
+        RequestStore.store[:mu_auth_allowed_groups] = response['mu-auth-allowed-groups']
+        RequestStore.store[:mu_auth_used_groups] = response['mu-auth-used=groups']
         response
       end
     end
