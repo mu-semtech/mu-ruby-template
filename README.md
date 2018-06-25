@@ -8,12 +8,13 @@ Configure your entrypoint through the environment variable `APP_ENTRYPOINT` (def
 
 ### Example Dockerfile
 
-    FROM semtech/mu-ruby-template:2.8.0
+    FROM semtech/mu-ruby-template:2.9.0
     LABEL maintainer="erika.pauwels@gmail.com"
     # ONBUILD of mu-ruby-template takes care of everything
 
 ### Versions
 The following versions of the mu-ruby-template are available:
+* `2.9.0` ; `2.9.0-ruby2.5`
 * `2.8.0` ; `2.8.0-ruby2.5`
 * `2.7.0` ; `2.7.0-ruby2.5`
 * `2.6.0` ; `2.6.0-ruby2.3`
@@ -42,7 +43,7 @@ When developing, you can use the template image, mount the volume with your sour
            -p 8888:80 \
            -e RACK_ENV=development \
            --name my-js-test \
-           semtech/mu-ruby-template:2.8.0
+           semtech/mu-ruby-template:2.9.0
 
 ### Develop in mu.semte.ch stack
 When developing inside an existing mu.semte.ch stack, it is easiest to set the development mode and mount the sources directly.  This makes it easy to setup links to the database and the dispatcher.
@@ -50,7 +51,7 @@ When developing inside an existing mu.semte.ch stack, it is easiest to set the d
 Optionally, you can publish the microservice on a different port, so you can access it directly without the dispatcher.  In the example below, port 8888 is used to access the service directly.  We set the path to our sources directly, ensuring we can develop the microservice in its original place.
 
     yourMicroserviceName:
-      image: semtech/mu-ruby-template:2.8.0
+      image: semtech/mu-ruby-template:2.9.0
       ports:
         - 8888:80
       environment:
@@ -153,7 +154,7 @@ To run the tests while developing, start an interactive container in the test en
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
-                -it semtech/mu-ruby-template:2.8.0 /bin/bash
+                -it semtech/mu-ruby-template:2.9.0 /bin/bash
 
 You can now run your tests inside the container with:
 
