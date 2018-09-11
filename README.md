@@ -160,7 +160,7 @@ To run the tests while developing, start an interactive container in the test en
 You can now run your tests inside the container with:
 
     bundle install
-    rspec -c
+    rspec
 
 ## Custom build commands
 To execute custom bash statements during the image build (e.g. to install aditional system libraries), provide an `on-build.sh` script in the root of your service. It will be automatically picked up and executed by the Docker build.
