@@ -4,7 +4,8 @@ gem 'sinatra', '1.4.8'
 gem 'sinatra-contrib', '1.4.7'
 
 gem 'bson', '4.0.0'
-gem 'linkeddata', '3.0.1'
+gem 'sparql-client', '3.0.1'
+gem 'rdf-vocab', '3.0.8'
 gem 'request_store', '1.4.1'
 
 group :test, :development do
@@ -13,7 +14,7 @@ group :test, :development do
   gem 'rack-test', '~> 0.6.3'
   gem 'pry'
   gem 'better_errors'
-  gem 'binding_of_caller'
+  gem 'binding_of_caller', :platforms => :ruby
 end
 
 Dir.glob(File.join(File.dirname(__FILE__), 'ext', '**', "Gemfile")) do |gemfile|
