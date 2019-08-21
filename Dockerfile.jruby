@@ -18,7 +18,6 @@ EXPOSE 80
 CMD ["/bin/bash", "/startup.sh"]
 ADD . /usr/src/app
 
-RUN gem install bundler && gem uninstall bundler -i /opt/jruby/lib/ruby/gems/shared --version '<2.0.0' # quirk in jruby that has old bundled version of bundler
 RUN ln -s /app /usr/src/app/ext \
      && ln -s /app/spec /usr/src/app/spec/ext \
      && mkdir /logs \
