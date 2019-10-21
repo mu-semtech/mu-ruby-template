@@ -12,11 +12,14 @@ require_relative 'sinatra_template/utils.rb'
 
 include SinatraTemplate::Utils
 
-configure do # backwards compatibility
+configure do
+  # backwards compatibility
   set :graph, graph
   set :sparql_client, sparql_client
   set :update_endpoint, update_endpoint
   set :log, SinatraTemplate::Utils.log
+  
+  set :protection, :except => [:json_csrf]
 end
 
 configure :development do
