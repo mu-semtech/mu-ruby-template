@@ -4,8 +4,8 @@ gem 'sinatra', '1.4.8'
 gem 'sinatra-contrib', '1.4.7'
 
 gem 'bson', '4.0.0'
-gem 'sparql-client', '3.0.1'
 gem 'rdf-vocab', '3.0.8'
+gem 'sparql-client', '3.1.0'
 gem 'request_store', '1.4.1'
 
 group :test, :development do
