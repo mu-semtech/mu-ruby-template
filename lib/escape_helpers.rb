@@ -2,7 +2,7 @@ require 'uri'
 
 class String
   def sparql_escape
-    '"' + self.gsub(/[\\"']/) { |s| '\\' + s } + '"'
+    '"""' + self.gsub(/[\\"]/) { |s| '\\' + s } + '"""'
   end
 end
 
