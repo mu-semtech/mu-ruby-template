@@ -72,10 +72,18 @@ end
 after do
   auth_headers = {}
   if RequestStore.store[:mu_auth_allowed_groups]
-    auth_headers['mu-auth-allowed-groups'] = RequestStore.store[:mu_auth_allowed_groups]
+    if headers['mu-auth-allowed-groups']
+      log.info "ruby template: not setting allowed groups because header already provided with value #{headers['mu-auth-allowed-groups'].inspect}"
+    else
+      auth_headers['mu-auth-allowed-groups'] = RequestStore.store[:mu_auth_allowed_groups]
+    end
   end
   if RequestStore.store[:mu_auth_used_groups]
-    auth_headers['mu-auth-used-groups'] = RequestStore.store[:mu_auth_used_groups]
+    if headers['mu-auth-used-groups']
+      log.info "ruby template: not setting used groups because header already provided with value #{headers['mu-auth-used-groups'].inspect}"
+    else
+      auth_headers['mu-auth-used-groups'] = RequestStore.store[:mu_auth_used_groups]
+    end
   end
   headers auth_headers
 end
