@@ -1,4 +1,4 @@
-FROM erikap/ruby-sinatra:1.0.0
+FROM erikap/ruby-sinatra:1.1.0
 
 LABEL maintainer="erika.pauwels@gmail.com"
 
