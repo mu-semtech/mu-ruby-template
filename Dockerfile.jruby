@@ -5,17 +5,15 @@ ENV LOG_LEVEL info
 ENV MU_SPARQL_ENDPOINT 'http://database:8890/sparql'
 ENV MU_APPLICATION_GRAPH 'http://mu.semte.ch/application'
 ENV TRUSTED_IP 0.0.0.0/0
-
-
 ENV RACK_ENV production
-ENV MAIN_APP_FILE web.rb
+
 RUN mkdir -p /usr/src/app
-ADD startup.sh /
+ADD mu-jruby-template.sh /
 WORKDIR /usr/src/app
 
 EXPOSE 80
 
-CMD ["/bin/bash", "/startup.sh"]
+CMD ["/bin/bash", "/mu-jruby-template.sh"]
 ADD . /usr/src/app
 
 RUN ln -s /app /usr/src/app/ext \
