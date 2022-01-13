@@ -1,20 +1,19 @@
 source 'https://rubygems.org'
 
-gem 'sinatra', '1.4.8'
-gem 'sinatra-contrib', '1.4.7'
-
-gem 'bson', '4.0.0'
-gem 'rdf-vocab', '3.0.8'
-gem 'sparql-client', '3.1.0'
-gem 'request_store', '1.4.1'
+gem 'sinatra', '~> 2.1'
+gem 'sinatra-contrib', '~> 2.1'
+gem 'webrick', '~> 1.7'
+gem 'bson', '~> 4.0'
+gem 'linkeddata', '~> 3.2'
+gem 'request_store', '~> 1.4'
 
 group :test, :development do
-  gem 'rspec', '~> 3.4'
-  gem 'json_spec', '~> 1.1', '>= 1.1.4'
-  gem 'rack-test', '~> 0.6.3'
-  gem 'pry'
-  gem 'better_errors'
-  gem 'binding_of_caller', :platforms => :ruby
+  gem 'rspec', '~> 3.10'
+  gem 'json_spec', '~> 1.1'
+  gem 'rack-test', '~> 1.1'
+  gem 'debug', '~> 1.4'
+  gem 'better_errors', '~> 2.9'
+  gem 'binding_of_caller', '~> 1.0', :platforms => :ruby
 end
 
 Dir.glob(File.join(File.dirname(__FILE__), 'ext', '**', "Gemfile")) do |gemfile|

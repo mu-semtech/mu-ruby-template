@@ -2,10 +2,10 @@ require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
 require 'sinatra/reloader' if development?
-require 'pry' if development?
+require 'debug' if development?
 require 'better_errors' if development?
 require 'json'
-require 'rdf/vocab'
+require 'linkeddata'
 require 'request_store'
 require_relative 'sinatra_template/helpers.rb'
 require_relative 'sinatra_template/utils.rb'
@@ -13,19 +13,16 @@ require_relative 'sinatra_template/utils.rb'
 include SinatraTemplate::Utils
 
 configure do
-  # backwards compatibility
-  set :graph, graph
-  set :sparql_client, sparql_client
-  set :update_endpoint, update_endpoint
-  set :log, SinatraTemplate::Utils.log
-  
+  set :environment, ENV['RACK_ENV'].to_sym
+  set :bind, '0.0.0.0'
+  set :port, 80
   set :protection, :except => [:json_csrf]
 end
 
-configure :development do
+if development?
   use BetterErrors::Middleware
   BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
-  # you need to set the application root in order to abbreviate filenames within the application:
+  # set the application root in order to abbreviate filenames within the application:
   BetterErrors.application_root = File.expand_path('..', __FILE__)
 end
 

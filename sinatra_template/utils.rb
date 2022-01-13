@@ -39,7 +39,7 @@ module SinatraTemplate
       if ENV['MU_SPARQL_TIMEOUT']
         options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
       end
-      SinatraTemplate::SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], options)
+      SinatraTemplate::SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], **options)
     end
 
     def sparql_escape_string(value)
@@ -72,7 +72,7 @@ module SinatraTemplate
 
     def update(query)
       log.info "Executing query: #{query}"
-      sparql_client.update query, { endpoint: update_endpoint }
+      sparql_client.update query, endpoint: update_endpoint
     end
 
     def update_endpoint
