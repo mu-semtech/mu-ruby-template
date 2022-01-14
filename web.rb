@@ -9,8 +9,7 @@ require 'linkeddata'
 require 'request_store'
 require_relative 'sinatra_template/helpers.rb'
 require_relative 'sinatra_template/utils.rb'
-
-include SinatraTemplate::Utils
+require_relative 'mu.rb'
 
 configure do
   set :environment, ENV['RACK_ENV'].to_sym
@@ -41,8 +40,13 @@ SERVICE_RESOURCE_BASE = 'http://mu.semte.ch/services/'
 ###
 # Helpers
 ###
-helpers SinatraTemplate::Helpers
+helpers Mu::Helpers
 use RequestStore::Middleware
+
+if Mu.truthy? ENV['INCLUDE_LEGACY_UTILS']
+  Mu.log.info "INCLUDE_LEGACY_UTILS enabled. Deprecated utilities will be included. Upgrade by using utils from the Mu-module instead. E.g. 'query' becomes 'Mu.query'"
+  include SinatraTemplate::Utils
+end
 
 ###
 # Hooks
