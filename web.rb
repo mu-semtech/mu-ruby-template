@@ -7,6 +7,7 @@ require 'request_store'
 if development?
   require 'sinatra/reloader'
   require 'better_errors'
+  require 'debug/open_nonstop'
 end
 require_relative 'sinatra_template/helpers.rb'
 require_relative 'sinatra_template/utils.rb'
