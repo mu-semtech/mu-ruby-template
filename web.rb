@@ -1,24 +1,35 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
-require 'sinatra/reloader' if development?
-require 'debug' if development?
-require 'better_errors' if development?
 require 'json'
 require 'linkeddata'
 require 'request_store'
+if development?
+  require 'sinatra/reloader'
+  require 'better_errors'
+end
 require_relative 'sinatra_template/helpers.rb'
 require_relative 'sinatra_template/utils.rb'
 require_relative 'mu.rb'
 
 configure do
-  set :environment, ENV['RACK_ENV'].to_sym
+  set :environment, ENV['RACK_ENV'].downcase.to_sym
   set :bind, '0.0.0.0'
   set :port, 80
   set :protection, :except => [:json_csrf]
 end
 
 if development?
+  mounted_volume = '/app'
+  if not File.directory?(mounted_volume) or not File.exist?("#{mounted_volume}/#{ENV['APP_ENTRYPOINT']}")
+    Mu.log.warn "Template is started in development mode, but no sources are mounted in #{mounted_volume}. Expected a file at #{mounted_volume}/#{ENV['APP_ENTRYPOINT']}."
+    exit(1)
+  end
+  also_reload "#{mounted_volume}/**/*"
+  after_reload do
+    Mu.log.info "Changes detected. Reloaded the app."
+  end
+
   use BetterErrors::Middleware
   BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
   # set the application root in order to abbreviate filenames within the application:
