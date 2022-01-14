@@ -72,12 +72,7 @@ module SinatraTemplate
 
     def update(query)
       log.info "Executing query: #{query}"
-      sparql_client.update query, endpoint: update_endpoint
-    end
-
-    def update_endpoint
-      # update endpoint is a relative path
-      ENV['MU_SPARQL_UPDATE_ENDPOINT'] || RDF::URI.new(ENV['MU_SPARQL_ENDPOINT']).request_uri
+      sparql_client.update query
     end
 
     def update_modified(subject, modified = DateTime.now)

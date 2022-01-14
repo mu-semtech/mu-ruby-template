@@ -130,7 +130,7 @@ Validate whether the type specified in the JSON data is equal to the expected ty
 
 
 ## Helpers outside the Sinatra context
-The template provides several helpers that are automatically included in the Sinatra application (`web.rb`), but some of them can also be used outside the Sinatra context. Just include the `SinatraTemplate::Utils` module in your file. 
+The template provides several helpers that are automatically included in the Sinatra application (`web.rb`), but some of them can also be used outside the Sinatra context. Just include the `SinatraTemplate::Utils` module in your file.
 
 ```
 require_relative '/usr/src/app/sinatra_template/utils.rb'
@@ -165,7 +165,3 @@ You can now run your tests inside the container with:
 
 ## Custom build commands
 To execute custom bash statements during the image build (e.g. to install aditional system libraries), provide an `on-build.sh` script in the root of your service. It will be automatically picked up and executed by the Docker build.
-
-## Experimental features
-#### MU_SPARQL_UPDATE_ENDPOINT environment variable
-Configure the SPARQL update endpoint path. This should be a path relative to the base of `MU_SPARQL_ENDPOINT`. Default: `/sparql`. The update endpoint can be retrieved via the `update_endpoint` helper method.
