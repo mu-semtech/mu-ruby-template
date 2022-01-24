@@ -8,7 +8,7 @@ end
 
 class URI::Generic
   def sparql_escape
-    '<' + self.to_s.gsub(/[\\"']/) { |s| '\\' + s } + '>'
+    '<' + self.to_s.gsub(/[\\"<>]/) { |s| '\\' + s } + '>'
   end
 end
 
