@@ -201,7 +201,7 @@ The template supports the following environment variables:
 - `APP_ENTRYPOINT`: name of the file containing the application entrypoint. Default: `web.rb`.
 - `RUBY_DEBUG_PORT`: port to use for remote debugging. Default: `12345`.
 - `RUBY_DEBUG_OPEN_FRONTEND`: frontend to use for debugging. Default: `rdbg`. Possible values: `rdbg`, `chrome`.
-- `RUBY_OPTS`: options to pass to the ruby command on startup. Default: `--jit`.
+- `RUBY_OPTIONS`: options to pass to the ruby command on startup. Default: `--jit`.
 
 ### Custom build commands
 To execute custom bash statements during the image build (e.g. to install aditional system libraries), provide an `on-build.sh` script in the root of your service. It will be automatically picked up and executed by the Docker build.

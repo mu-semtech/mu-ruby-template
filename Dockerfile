@@ -3,7 +3,7 @@ FROM ruby:3.1
 LABEL maintainer="erika.pauwels@gmail.com"
 
 ENV APP_ENTRYPOINT web.rb
-ENV RUBY_OPTS '--jit'
+ENV RUBY_OPTIONS '--jit'
 ENV RACK_ENV production
 ENV LOG_LEVEL info
 ENV RUBY_DEBUG_PORT 12345
