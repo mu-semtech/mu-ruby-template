@@ -70,7 +70,7 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: push-latest
+name: push-jruby-latest
 steps:
 - name: build-and-push
   image: plugins/docker
@@ -90,7 +90,7 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: push-release
+name: push-jruby-release
 steps:
 - name: build-and-push-tag
   image: plugins/docker
@@ -108,7 +108,7 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: push-feature-build
+name: push-jruby-feature-build
 steps:
 - name: push-feature-build
   image: plugins/docker
@@ -130,7 +130,7 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: dry-run
+name: jruby-dry-run
 steps:
 - name: dry-run
   image: plugins/docker
