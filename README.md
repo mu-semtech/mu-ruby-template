@@ -1,6 +1,82 @@
 # Mu Ruby template
 Template for running Ruby/[Sinatra](http://www.sinatrarb.com/) microservices
 
+## Getting started: Building your first microservice with Sinatra
+![](http://mu.semte.ch/wp-content/uploads/2017/04/ruby_sinatra-e1492071925754-1024x839.jpg)
+
+The microservices are one of the core components of the mu.semte.ch architecture. Each microservice has its own responsibility, providing a tiny part of the application’s functionality while running in a Docker container. But how can you build such a microservice? To which rules does the microservice need to comply to run on the mu.semte.ch platform? The answer is simple: use the mu.semte.ch templates!
+
+A template is an easy starting point to build your own microservice. Its core purpose is to facilitate the development of a microservice that can run on the mu.semte.ch platform. There are templates available in several programming languages. As the name implies, this is a template to build microservices in Ruby.
+
+### Sinatra takes the stage
+
+The mu-ruby-template is based on the lightweight Ruby web framework [Sinatra](http://www.sinatrarb.com/). So in essence, everything you can do in Sinatra, you can also do in the template. We will start with the implementation of a simple ‘Hello World’ API endpoint.
+
+Open a new file ‘web.rb’ and add the following lines of code:
+```rb
+get '/hello' do
+    status 200
+    { message: 'Hello world! }.to\_json
+end
+```
+
+We’ve now defined a simple API endpoint on the path ‘/hello’. Next, we will wrap these lines of code in the mu-ruby-template.
+
+Create a Dockerfile next to the web.rb file with the following content:
+```Dockerfile
+    FROM semtech/mu-ruby-template:2.4.0-ruby2.3
+```
+That’s it! You’ve build your first Ruby microservice in mu.semte.ch. If you now build this Docker image and include it in your mu-project, you will have a /hello endpoint available in your platform. Don’t forget to add a rule to your dispatcher to make this endpoint available to the frontend application.
+
+### Developing the microservice
+
+Building the Docker image each time you’ve changed some code is rather cumbersome during development. The template therefore supports development with live-reload. Start a container based on the mu-ruby-template image and mount your code in the /app folder:
+```bash
+    > docker run --volume /path/to/your/code:/app
+                 -e RACK_ENV=development
+                 -d semtech/mu-ruby-template:2.4.0-ruby2.3
+```
+Each time you change some code, the microservice will be automatically updated.
+
+### What’s more?
+
+By this time, you might be wondering what the benefit of the template is as Sinatra is already an easy-to-use platform on its own. The mu-ruby-template offers more than just the Sinatra framework. A lot of boilerplate code that you will probably need, is already provided. For example, we don’t want a developer to write the code how to query to a SPARQL endpoint over and over again for each microservice. Therefore the template provides helper methods to make it as easy as possible for a developer to build a microservice.
+
+You want to execute a SPARQL query? Just add in your web.rb:
+```rb
+query 'SELECT \* WHERE { ?s ?p ?o }'
+```
+You want to insert data in the triple store? Just add in your web.rb:
+```rb
+update "INSERT DATA {
+    GRAPH <#{graph}> { 
+        <http://example.com/mails/58B187FA6AA88E0009000001> <#{MU\_CORE.uuid}\> \\"58B187FA6AA88E0009000001\\"
+    }
+}"
+```
+You want to generate a random UUID? Just add in your web.rb:
+```rb
+generate\_uuid()
+```
+We can continue with examples like these for a while. But it may be a better idea for you to have a look at the overview of all helpers in the [below](#helper-methods).
+
+The helpers are automatically available in your Sinatra application (web.rb). However, if you want to use the helpers outside of the Sinatra context, just include the module with the helpers in your file by adding:
+```rb
+    require_relative '/usr/src/app/sinatra_template/utils.rb'
+    include SinatraTemplate::Utils
+```
+
+### Using additional libraries
+
+The mu-ruby-template contains several libraries like the [linkeddata gem](https://rubygems.org/gems/linkeddata) for everything related to RDF/SPARQL, [pry](https://rubygems.org/gems/pry) and [better\_errors](https://rubygems.org/gems/better_errors) for debugging and [rspec](https://rubygems.org/gems/rspec) for testing. If you need additional gems for your microservice, just create a Gemfile next to your web.rb and list the required gems as you normally do. You don’t have to repeat the gems that are already included in the template. The required gems will be automatically installed at build time. While developing in a container as described above, you will have to restart the container for the new included gems to be installed.
+
+### Examples
+There are already [some microservices available](https://github.com/search?q=topic%3Amu-service+org%3Amu-semtech&type=Repositories) that use the mu-ruby-template. Have a look at them to see how simple it is to build a microservice based on this template. The [login-](https://github.com/mu-semtech/login-service) and [registration-service](https://github.com/mu-semtech/registration-service) make extensive use of the available helpers methods. The [mu-migrations-service](https://github.com/mu-semtech/mu-migrations-service) on the other hand shows how to use the helpers outside the Sinatra context.
+
+*This tutorial has been adapted from Erika Pauwels's mu.semte.ch article. You can view it [here](https://mu.semte.ch/2017/04/13/building-your-first-microservice-with-sinatra/)*
+
+
+
 ## How-To
 ### Quickstart
 Extend the `semtech/mu-ruby-template` and set a maintainer. That's it.
