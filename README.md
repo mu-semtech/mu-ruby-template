@@ -1,14 +1,15 @@
 # Mu Ruby template
 Template for running Ruby/[Sinatra](http://www.sinatrarb.com/) microservices
 
-## Getting started: Building your first microservice with Sinatra
+## Tutorials
+### Building your first microservice with Sinatra
 ![](http://mu.semte.ch/wp-content/uploads/2017/04/ruby_sinatra-e1492071925754-1024x839.jpg)
 
 The microservices are one of the core components of the mu.semte.ch architecture. Each microservice has its own responsibility, providing a tiny part of the application’s functionality while running in a Docker container. But how can you build such a microservice? To which rules does the microservice need to comply to run on the mu.semte.ch platform? The answer is simple: use the mu.semte.ch templates!
 
 A template is an easy starting point to build your own microservice. Its core purpose is to facilitate the development of a microservice that can run on the mu.semte.ch platform. There are templates available in several programming languages. As the name implies, this is a template to build microservices in Ruby.
 
-### Sinatra takes the stage
+#### Sinatra takes the stage
 
 The mu-ruby-template is based on the lightweight Ruby web framework [Sinatra](http://www.sinatrarb.com/). So in essence, everything you can do in Sinatra, you can also do in the template. We will start with the implementation of a simple ‘Hello World’ API endpoint.
 
@@ -28,7 +29,7 @@ Create a Dockerfile next to the web.rb file with the following content:
 ```
 That’s it! You’ve build your first Ruby microservice in mu.semte.ch. If you now build this Docker image and include it in your mu-project, you will have a /hello endpoint available in your platform. Don’t forget to add a rule to your dispatcher to make this endpoint available to the frontend application.
 
-### Developing the microservice
+#### Developing the microservice
 
 Building the Docker image each time you’ve changed some code is rather cumbersome during development. The template therefore supports development with live-reload. Start a container based on the mu-ruby-template image and mount your code in the /app folder:
 ```bash
@@ -38,7 +39,7 @@ Building the Docker image each time you’ve changed some code is rather cumber
 ```
 Each time you change some code, the microservice will be automatically updated.
 
-### What’s more?
+#### What’s more?
 
 By this time, you might be wondering what the benefit of the template is as Sinatra is already an easy-to-use platform on its own. The mu-ruby-template offers more than just the Sinatra framework. A lot of boilerplate code that you will probably need, is already provided. For example, we don’t want a developer to write the code how to query to a SPARQL endpoint over and over again for each microservice. Therefore the template provides helper methods to make it as easy as possible for a developer to build a microservice.
 
@@ -66,16 +67,183 @@ The helpers are automatically available in your Sinatra application (web.rb). Ho
     include SinatraTemplate::Utils
 ```
 
-### Using additional libraries
+#### Using additional libraries
 
-The mu-ruby-template contains several libraries like the [linkeddata gem](https://rubygems.org/gems/linkeddata) for everything related to RDF/SPARQL, [pry](https://rubygems.org/gems/pry) and [better\_errors](https://rubygems.org/gems/better_errors) for debugging and [rspec](https://rubygems.org/gems/rspec) for testing. If you need additional gems for your microservice, just create a Gemfile next to your web.rb and list the required gems as you normally do. You don’t have to repeat the gems that are already included in the template. The required gems will be automatically installed at build time. While developing in a container as described above, you will have to restart the container for the new included gems to be installed.
+The mu-ruby-template contains several libraries like the [linkeddata gem](https://rubygems.org/gems/linkeddata) for everything related to RDF/SPARQL, [pry](https://rubygems.org/gems/pry) and [better_errors](https://rubygems.org/gems/better_errors) for debugging and [rspec](https://rubygems.org/gems/rspec) for testing. If you need additional gems for your microservice, just create a Gemfile next to your web.rb and list the required gems as you normally do. You don’t have to repeat the gems that are already included in the template. The required gems will be automatically installed at build time. While developing in a container as described above, you will have to restart the container for the new included gems to be installed.
 
-### Examples
+#### Examples
 There are already [some microservices available](https://github.com/search?q=topic%3Amu-service+org%3Amu-semtech&type=Repositories) that use the mu-ruby-template. Have a look at them to see how simple it is to build a microservice based on this template. The [login-](https://github.com/mu-semtech/login-service) and [registration-service](https://github.com/mu-semtech/registration-service) make extensive use of the available helpers methods. The [mu-migrations-service](https://github.com/mu-semtech/mu-migrations-service) on the other hand shows how to use the helpers outside the Sinatra context.
 
 *This tutorial has been adapted from Erika Pauwels's mu.semte.ch article. You can view it [here](https://mu.semte.ch/2017/04/13/building-your-first-microservice-with-sinatra/)*
 
 
+### Building an RDFa importer service
+![](http://mu.semte.ch/wp-content/uploads/2017/07/IMG_6145-1024x768.png)
+
+RDFa is a way to embed a Semantic Model into Linked Data.  In this tutorial we describe how we can implement a microservice to import these contents into the mu.semte.ch stack.  We will go through our own development process and see what we discovered.
+
+#### Getting started
+
+We create a new folder with the basic stub for a new Ruby template.
+
+```rb
+# /path/to/importer/web.rb
+get '/' do
+ content_type 'application/json'
+ { data: { attributes: { hello: 'world' } } }.to_json
+end
+```
+
+```Dockerfile
+# /path/to/importer/Dockerfile
+FROM semtech/mu-ruby-template:2.4.0-ruby2.3
+MAINTAINER Aad Versteden <madnificent@gmail.com>
+# see https://github.com/mu-semtech/mu-ruby-template for more info
+```
+
+With these files in place we can wire this new service up in a standard mu-project by updating our `docker-compose.yml` and `dispatcher.ex`.
+
+In the `docker-compose.yml` we add our development component and link it to the dispatcher.
+```yaml
+dispatcher:
+  ...
+  links:
+    - rdfaimporter:rdfaimporter
+...
+rdfaimporter:
+  image: semtech/mu-ruby-template:2.4.0-ruby2.3
+  links:
+    - db:database
+  ports:
+    - "8888:80"
+  environment:
+    RACK_ENV: "development"
+  volumes:
+   - "/path/to/importer/:/app"
+```
+
+In the dispatcher, we add the following above *`match _ do`*
+
+```ex
+# new content in dispatcher.ex
+match "/import/*path" do
+  Proxy.forward conn, path, "http://rdfaimporter/"
+end
+```
+
+After starting our project, we can surf to http://localhost/importer and we will receive our default hello world output.  As we update the code in our ruby-template, we will see the updates appear live.
+
+#### Importing RDFa
+
+*Hint: If you’re working your way through this tutorial, you won’t need to execute the steps in this section.*
+
+During our search for a good solution, we search online for a good RDFa importing library.  We find the [rdf-rdfa](https://github.com/ruby-rdf/rdf-rdfa) library on GitHub.  This library looks clean so we create a new Gemfile and add the latest version to it.
+
+```gemfile
+# /path/to/importer/Gemfile
+gem 'rdf-rdfa', '2.2.2'
+```
+
+When we restart the container, which we need to do because we changed the dependencies, we notice that the mu-ruby-template we see the following output.
+```bash
+rdfaimporter_1 | You have requested:
+rdfaimporter_1 | rdf-rdfa = 2.2.2
+rdfaimporter_1 | 
+rdfaimporter_1 | The bundle currently has rdf-rdfa locked at 2.1.0.
+rdfaimporter_1 | Try running `bundle update rdf-rdfa`
+```
+
+Turns out the `mu-ruby-template` already made the decision for us.  We can remove our Gemfile and continue humming away with the version offered by the mu-ruby-template.
+
+#### Parsing the RDFa file
+With the RDFa library selected, and documentation in place, we work through a first version for parsing the file.
+
+We save an RDFa annotated file (without blank nodes) into *`./data/share/our-example.html`*, where the import service can find it.
+```html
+<div resource="http://test.com/Articles/81216194" vocab="http://test.com/vocabulary/" typeof="Article" class="article">
+  <h2 property="hasTitle">New article</h2>
+  <p property="hasContent">
+    Content of an which refers to <span property="referredPerson" typeof="foaf:Agent" resource="mailto:madnificent@gmail.com"><a property="email-address" href="mailto:madnificent@gmail.com">Aad Versteden</a></span>.
+  </p>
+</div>
+```
+We will use this example in a simple case with debugging output.  We can see the contents in an easy-to-interpret format by pasting it at http://rdfa.info/play.  In our first try we send this file through the rdf-rdfa library and we dump the contents.
+
+For a cleaner interface, we change our get to process on *`/import/`* and update the dispatcher accordingly:
+```ex
+ # updated content in dispatcher.ex
+ match "/import/*path" do
+   Proxy.forward conn, path, "http://rdfaimporter/import/"
+ end
+```
+
+Then we implement a basic dump of the parsed contents:
+```ex
+require 'rdf/rdfa'
+
+get '/import/' do
+  content_type 'application/json'
+
+  graph = RDF::Graph.load("/share/#{params[:file]}")
+  dump = graph.dump :ttl
+
+  { data: { attributes: { parsed: dump } } }.to_json
+end
+```
+
+When we access http://localhost:8888/import/?file=our-example.html, we see the resulting turtle in the response.  Yay, we’re ready to write this into the triplestore.
+
+#### Writing contents
+
+We can write contents to the triplestore by using *`sparql_client.insert_data_graph`*.  At first, we try this with a temporary graph.
+require 'rdf/rdfa'
+```ex
+require 'rdf/rdfa'
+
+get '/import/' do
+  content_type 'application/json'
+
+  graph = RDF::Graph.load("/share/#{params[:file]}")
+  dump = graph.dump :ttl
+
+  sparql_client.insert_data graph, :graph => "http://test.com/1"
+
+  { data: { attributes: { parsed: dump } } }.to_json
+end
+```
+
+When we surf to http://localhost:8888/import/?file=our-example.html, our data is inserted into the triplestore.  We find it by going to  http://localhost:8890 and executing a query which lists all triples of the specified graph.
+
+```sparql
+SELECT * WHERE {
+  GRAPH <http://test.com/1> {
+    ?s ?p ?o.
+  }
+}
+```
+
+Our contents are inserted into the application graph by updating the graph statement.
+```ex
+require 'rdf/rdfa'
+
+get '/import/' do
+ content_type 'application/json'
+
+ graph = RDF::Graph.load("/share/#{params[:file]}")
+ dump = graph.dump :ttl
+
+ sparql_client.insert_data graph, :graph => ENV['MU_APPLICATION_GRAPH']
+
+ { data: { attributes: { parsed: dump } } }.to_json
+end
+```
+
+#### Conclusion
+With this, mu.semte.ch has been extended to import RDFa documents.  There is the slight limitation that only documents without blank nodes are allowed.  An extension to the twelve-line-long microservice could help here.
+
+Down the line it might be worth exploring connecting with a file upload, making the importer safer, and more solid.
+
+*This tutorial has been adapted from Aad Versteden's mu.semte.ch article. You can view it [here](https://mu.semte.ch/2017/07/06/building-an-rdfa-importer-service/)*
 
 ## How-To
 ### Quickstart
