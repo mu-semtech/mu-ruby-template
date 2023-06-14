@@ -5,6 +5,14 @@ pipeline:
       repo: "${CI_REPO_OWNER##mu-}/${CI_REPO_NAME}"
       tags: "feature-${CI_COMMIT_BRANCH##feature/}"
     secrets: [docker_username, docker_password]
-    when:
-      event: push
-      branch: feature/*
+  build-and-push-jruby:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      platforms: linux/amd64,linux/arm64
+      repo: "${CI_REPO_OWNER##mu-}/${CI_REPO_NAME/ruby/jruby}"
+      tags: "feature-${CI_COMMIT_BRANCH##feature/}"
+      dockerfile: Dockerfile.jruby
+    secrets: [docker_username, docker_password]
+when:
+  event: push
+  branch: feature/*
