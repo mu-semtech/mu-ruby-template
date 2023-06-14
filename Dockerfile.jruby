@@ -1,4 +1,4 @@
-FROM jruby:9
+FROM jruby:9.2
 
 ENV APP_ENTRYPOINT web.rb
 ENV LOG_LEVEL info
@@ -15,7 +15,7 @@ WORKDIR /usr/src/app
 
 EXPOSE 80
 
-CMD ["/bin/bash", "/startup.sh"]
+CMD ["/startup.sh"]
 ADD . /usr/src/app
 
 RUN ln -s /app /usr/src/app/ext \
