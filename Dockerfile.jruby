@@ -1,5 +1,10 @@
 FROM jruby:9.2
 
+# Prevent services from freaking out when loading "native protocols db"
+RUN apt-get update \
+  && apt-get install -y netbase --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/*
+
 ENV APP_ENTRYPOINT web.rb
 ENV LOG_LEVEL info
 ENV MU_SPARQL_ENDPOINT 'http://database:8890/sparql'
