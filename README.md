@@ -114,14 +114,14 @@ docker inspect <my-container-name>
 ```
 
 #### Attach the debugger
-When running in development mode, you can attach the debugger to your microservice and add breakpoints as you're used to. The debugger requires port 12345 to be forwarded, and your service to run in development mode.
+When running in development mode, you can attach the debugger to your microservice and add breakpoints as you're used to. The debugger requires port 9229 to be forwarded, and your service to run in development mode.
 
 ```yml
 my-ruby-service:
   image: semtech/mu-ruby-template
   ports:
     - 8888:80
-    - 12345:12345
+    - 9229:9229
   environment:
     RACK_ENV: "development"
   links:
@@ -131,19 +131,8 @@ my-ruby-service:
 ```
 
 Currently 2 debuggers are supported which can be configured via the `RUBY_DEBUG_OPEN_FRONTEND` environment variable:
-- `rdbg` (default)
-- `chrome`
-
-##### rdbg
-Add a breakpoint in your code by inserting a `binding.break` (alias `debugger`, `binding.b`) statement.
-
-Attach the default ruby debugger tool by starting a new interactive container using the following command:
-
-```bash
-docker run --rm semtech/mu-ruby-template rdbg --attach 12345
-```
-
-The code will run until the breakpoint is reached. Use the debugger tool as documented in the [ruby debug documentation](https://github.com/ruby/debug#invoke-with-the-debugger) to inspect your code.
+- `chrome` (default)
+- `rdbg`
 
 ##### Chrome DevTools
 Configure `chrome` as debugger frontend by adding the following environment variable on your service
@@ -155,7 +144,19 @@ Configure `chrome` as debugger frontend by adding the following environment vari
 
 Add a breakpoint in your code by inserting a `binding.break` (alias `debugger`, `binding.b`) statement.
 
-After launching your service, open Google Chrome or Chromium and visit [devtools://devtools/bundled/inspector.html?ws=127.0.0.1:12345](devtools://devtools/bundled/inspector.html?ws=127.0.0.1:12345). Once you reach the breakpoint, the file containing your code will be automatically opened in the 'Sources' tab.
+After launching your service, open Google Chrome or Chromium and visit [chrome://inspect](chrome://inspect). Once you reach the breakpoint, the file containing your code will be automatically opened in the 'Sources' tab.
+
+
+##### rdbg
+Add a breakpoint in your code by inserting a `binding.break` (alias `debugger`, `binding.b`) statement.
+
+Attach the default ruby debugger tool by starting a new interactive container using the following command:
+
+```bash
+docker run --rm semtech/mu-ruby-template rdbg --attach 9229
+```
+
+The code will run until the breakpoint is reached. Use the debugger tool as documented in the [ruby debug documentation](https://github.com/ruby/debug#invoke-with-the-debugger) to inspect your code.
 
 ### Access your microservice directly
 Requires: 'Build a microservice based on mu-javascript-template' or 'Develop in a mu.semte.ch stack'
@@ -294,7 +295,7 @@ The template supports the following environment variables:
 - `USE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu::query`). Default: `"true"`
 - `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
 - `RACK_ENV`: environment to start the Sinatra application in. Default: `production`. Possible values `production`, `development`, `test`.
-- `RUBY_DEBUG_PORT`: port to use for remote debugging. Default: `12345`.
+- `RUBY_DEBUG_PORT`: port to use for remote debugging. Default: `9229`.
 - `RUBY_DEBUG_OPEN_FRONTEND`: frontend to use for debugging. Default: `rdbg`. Possible values: `rdbg`, `chrome`.
 - `RUBY_OPTIONS`: options to pass to the ruby command on startup. Default: `--jit`.
 
