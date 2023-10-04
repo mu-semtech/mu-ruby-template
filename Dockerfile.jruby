@@ -1,4 +1,4 @@
-FROM jruby:9.3
+FROM jruby:9.4
 LABEL maintainer="erika.pauwels@gmail.com"
 
 # Prevent services from freaking out when loading "native protocols db"
