@@ -105,58 +105,28 @@ Requires: 'Develop in a mu.semte.ch stack'.
 
 If desired, [debug](https://rubygems.org/gems/debug) and [Better Errors](https://rubygems.org/gems/better_errors) can be used during development, giving advanced ruby debugging features.
 
-#### Better Errors
-When an error occurs, an interactive [Better Errors](https://github.com/charliesome/better_errors) error page is available at `http://{container-ip}/__better_errors`. It's important to access the error page via the container's IP directly and not through localhost, identifier, dispatcher, etc.
+#### Inspecting errors after the fact
+Requires: 'Access your microservice directly'.
 
-You can find your docker container's IP by executing
-```bash
-docker inspect <my-container-name>
-```
+When an error occurs, an interactive [Better Errors](https://github.com/charliesome/better_errors) error page is available at `http://localhost:8888/__better_errors`.
 
-#### Attach the debugger
+#### Attach the Chrome debugger
 When running in development mode, you can attach the debugger to your microservice and add breakpoints as you're used to. The debugger requires port 9229 to be forwarded, and your service to run in development mode.
 
 ```yml
 my-ruby-service:
   image: semtech/mu-ruby-template
   ports:
-    - 8888:80
     - 9229:9229
   environment:
     RACK_ENV: "development"
-  links:
-    - db:database
   volumes:
     - /absolute/path/to/your/sources/:/app/
-```
-
-Currently 2 debuggers are supported which can be configured via the `RUBY_DEBUG_OPEN_FRONTEND` environment variable:
-- `chrome` (default)
-- `rdbg`
-
-##### Chrome DevTools
-Configure `chrome` as debugger frontend by adding the following environment variable on your service
-```yml
-  environment:
-    RACK_ENV: "development"
-    RUBY_DEBUG_OPEN_FRONTEND: "chrome"
 ```
 
 Add a breakpoint in your code by inserting a `binding.break` (alias `debugger`, `binding.b`) statement.
 
 After launching your service, open Google Chrome or Chromium and visit [chrome://inspect](chrome://inspect). Once you reach the breakpoint, the file containing your code will be automatically opened in the 'Sources' tab.
-
-
-##### rdbg
-Add a breakpoint in your code by inserting a `binding.break` (alias `debugger`, `binding.b`) statement.
-
-Attach the default ruby debugger tool by starting a new interactive container using the following command:
-
-```bash
-docker run --rm semtech/mu-ruby-template rdbg --attach 9229
-```
-
-The code will run until the breakpoint is reached. Use the debugger tool as documented in the [ruby debug documentation](https://github.com/ruby/debug#invoke-with-the-debugger) to inspect your code.
 
 ### Access your microservice directly
 Requires: 'Build a microservice based on mu-javascript-template' or 'Develop in a mu.semte.ch stack'
@@ -286,6 +256,9 @@ Validate whether the Content-Type header contains the JSONAPI Content-Type. Retu
 #### validate_resource_type(expected_type, data)
 Validate whether the type specified in the JSON data is equal to the expected type. Returns a `409` otherwise.
 
+### Debugger
+[ruby/debug](https://github.com/ruby/debug) supports multiple frontends for remote debugging of which we advise the Chromium inspector. You can configure the frontend via `RUBY_DEBUG_OPEN_FRONTEND` environment variable. Other options are untested.
+
 ### Environment variables
 The template supports the following environment variables:
 
@@ -296,7 +269,7 @@ The template supports the following environment variables:
 - `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
 - `RACK_ENV`: environment to start the Sinatra application in. Default: `production`. Possible values `production`, `development`, `test`.
 - `RUBY_DEBUG_PORT`: port to use for remote debugging. Default: `9229`.
-- `RUBY_DEBUG_OPEN_FRONTEND`: frontend to use for debugging. Default: `rdbg`. Possible values: `rdbg`, `chrome`.
+- `RUBY_DEBUG_OPEN_FRONTEND`: frontend to use for debugging. Default: `chrome`. Other options are untested.
 - `RUBY_OPTIONS`: options to pass to the ruby command on startup. Default: `--jit`.
 
 ### Custom build commands
