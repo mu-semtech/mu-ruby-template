@@ -1,6 +1,10 @@
 FROM jruby:9.3
-
 LABEL maintainer="erika.pauwels@gmail.com"
+
+# Prevent services from freaking out when loading "native protocols db"
+RUN apt-get update \
+  && apt-get install -y netbase --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/*
 
 ENV APP_ENTRYPOINT web.rb
 ENV JRUBY_OPTIONS ''
@@ -38,4 +42,4 @@ ONBUILD RUN if [ -f /app/on-build.sh ]; \
 ONBUILD RUN cd /usr/src/app \
      && bundle install
 
-CMD ["/bin/bash", "/usr/src/app/mu-jruby-template.sh"]
+CMD ["/usr/src/app/mu-jruby-template.sh"]

@@ -38,4 +38,4 @@ ONBUILD RUN if [ -f /app/on-build.sh ]; \
 ONBUILD RUN cd /usr/src/app \
      && bundle install
 
-CMD ["/bin/bash", "/usr/src/app/mu-ruby-template.sh"]
+CMD ["/usr/src/app/mu-ruby-template.sh"]

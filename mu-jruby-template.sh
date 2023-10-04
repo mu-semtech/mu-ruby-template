@@ -2,13 +2,13 @@
 cd /usr/src/app
 if [ "$RACK_ENV" == "production" ];
 then
-    bundle exec ruby $JRUBY_OPTIONS --server web.rb
+    exec bundle exec ruby $JRUBY_OPTIONS --server web.rb
 else
     bundle install
     if [ "$RACK_ENV" == "test" ];
     then
         bundle exec rspec
     else
-        bundle exec ruby $JRUBY_OPTIONS --dev web.rb
+        exec bundle exec ruby $JRUBY_OPTIONS --dev web.rb
     fi
 fi
