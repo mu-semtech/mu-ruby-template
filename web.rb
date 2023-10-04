@@ -21,12 +21,12 @@ end
 if development?
   mounted_volume = '/app'
   if not File.directory?(mounted_volume) or not File.exist?("#{mounted_volume}/#{ENV['APP_ENTRYPOINT']}")
-    Mu.log.warn "Template is started in development mode, but no sources are mounted in #{mounted_volume}. Expected a file at #{mounted_volume}/#{ENV['APP_ENTRYPOINT']}."
+    Mu::log.warn "Template is started in development mode, but no sources are mounted in #{mounted_volume}. Expected a file at #{mounted_volume}/#{ENV['APP_ENTRYPOINT']}."
     exit(1)
   end
   also_reload "#{mounted_volume}/**/*"
   after_reload do
-    Mu.log.info "Changes detected. Reloaded the app."
+    Mu::log.info "Changes detected. Reloaded the app."
   end
 
   use BetterErrors::Middleware
@@ -50,8 +50,8 @@ SERVICE_RESOURCE_BASE = 'http://mu.semte.ch/services/'
 ###
 # Helpers
 ###
-if Mu.truthy? ENV['USE_LEGACY_UTILS']
-  Mu.log.info "USE_LEGACY_UTILS enabled. Deprecated utilities will be included. Upgrade by using utils from the Mu-module instead. E.g. 'query' becomes 'Mu.query'"
+if Mu::truthy? ENV['USE_LEGACY_UTILS']
+  Mu::log.info "USE_LEGACY_UTILS enabled. Deprecated utilities will be included. Upgrade by using utils from the Mu-module instead. E.g. 'query' becomes 'Mu::query'"
   require_relative 'sinatra_template/helpers.rb'
   require_relative 'sinatra_template/utils.rb'
   include SinatraTemplate::Utils
@@ -73,8 +73,8 @@ before do
     # request doesn't have a JSON body. Do nothing.
   end
   begin
-    if session_id_header(request)
-      RequestStore.store[:mu_session_id] = session_id_header(request)
+    if Mu::Helpers::session_id_header(request)
+      RequestStore.store[:mu_session_id] = Mu::Helpers::session_id_header(request)
       RequestStore.store[:mu_call_id] = request.env['HTTP_MU_CALL_ID']
       RequestStore.store[:mu_auth_allowed_groups] = request.env['HTTP_MU_AUTH_ALLOWED_GROUPS']
       RequestStore.store[:mu_auth_used_groups] = request.env['HTTP_MU_AUTH_USED_GROUPS']

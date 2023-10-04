@@ -99,17 +99,17 @@ module Mu
     extend self
 
     def session_id_header(request)
-      Mu.log.debug "Get HTTP_MU_SESSION_ID request header from #{request.env.inspect}"
+      Mu::log.debug "Get HTTP_MU_SESSION_ID request header from #{request.env.inspect}"
       request.env['HTTP_MU_SESSION_ID']
     end
 
     def rewrite_url_header(request)
-      Mu.log.debug "Get HTTP_X_REWRITE_URL request header from #{request.env.inspect}"
+      Mu::log.debug "Get HTTP_X_REWRITE_URL request header from #{request.env.inspect}"
       request.env['HTTP_X_REWRITE_URL']
     end
 
     def error(title, status = 400)
-      Mu.log.error "HTTP status #{status}: #{title}"
+      Mu::log.error "HTTP status #{status}: #{title}"
       halt status, { errors: [{ title: title }] }.to_json
     end
 

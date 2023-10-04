@@ -19,7 +19,7 @@ get '/' do
 end
 
 get '/triples' do
-  solutions = Mu.query("SELECT * WHERE { ?s ?p ?o }")
+  solutions = Mu::query("SELECT * WHERE { ?s ?p ?o }")
   triples = solutions.map do |solution|
     {
       subject: solution[:s],
@@ -130,37 +130,37 @@ You can now run your tests inside the container with:
 ## Reference
 ### Utils
 The template provides a `Mu` module with utils to facilitate development
-#### Mu.graph
+#### Mu::graph
 Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
 
-#### Mu.generate_uuid()
+#### Mu::generate_uuid()
 Generate a random UUID (String).
 
-#### Mu.log
-The template provides a [Logger](https://ruby-doc.org/stdlib-2.3.0/libdoc/logger/rdoc/Logger.html) `log` object to the user for logging. Just do `Mu.log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
+#### Mu::log
+The template provides a [Logger](https://ruby-doc.org/stdlib-2.3.0/libdoc/logger/rdoc/Logger.html) `log` object to the user for logging. Just do `Mu::log.info "Hello world"`. The log level can be set through the `LOG_LEVEL` environment variable (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
 
 Logs are written to the `/logs` directory and `STDOUT` in the docker container.
 
-#### Mu.query(query)
+#### Mu::query(query)
 Executes the given SPARQL select/ask/construct query.
 
-#### Mu.sparql_client
+#### Mu::sparql_client
 Returns a SPARQL::Client instance connection to the SPARQL endpoint configured through the `MU_SPARQL_ENDPOINT` environment variable.
 
-#### *.sparql_escape ; Mu.sparql_escape_{string|uri|date|datetime|bool|int|float}(value)
+#### *.sparql_escape ; Mu::sparql_escape_{string|uri|date|datetime|bool|int|float}(value)
 The Ruby templates extends the core classes `String`, `Date`, `DateTime`, `Time`, `Integer`, `Float`, `Boolean` and `URI` with a `sparql_escape` method. This method can be used to avoid SPARQL injection by escaping user input while constructing a SPARQL query. E.g.
 
 ```ruby
 query =  " INSERT DATA {"
-query += "   GRAPH <#{Mu.graph}> {"
-query += "     #{Mu.sparql_escape_uri(user_uri)} a <#{RDF::Vocab::FOAF.Person}> ;"
+query += "   GRAPH <#{Mu::graph}> {"
+query += "     #{Mu::sparql_escape_uri(user_uri)} a <#{RDF::Vocab::FOAF.Person}> ;"
 query += "                   <#{RDF::Vocab::FOAF.name}> #{name.sparql_escape} ;"
 query += "                   <#{RDF::Vocab::DC.created}> #{now.sparql_escape} ."
 query += "   }"
 query += " }"
 ```
 
-Next to the extensions, the template also provides a helper function per datatype that takes any value as parameter. E.g. `Mu.sparql_escape_uri("http://mu.semte.ch/application")`.
+Next to the extensions, the template also provides a helper function per datatype that takes any value as parameter. E.g. `Mu::sparql_escape_uri("http://mu.semte.ch/application")`.
 
 #### update(query)
 Executes the given SPARQL update query.
@@ -196,7 +196,7 @@ The template supports the following environment variables:
 - `MU_SPARQL_ENDPOINT`: SPARQL endpoint URL. Default: `http://database:8890/sparql`
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
 - `LOG_LEVEL`: the level of logging (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
-- `USE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu.query`). Default: `"true"`
+- `USE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu::query`). Default: `"true"`
 - `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
 - `RACK_ENV`: environment to start the Sinatra application in. Default: `production`. Possible values `production`, `development`, `test`.
 - `APP_ENTRYPOINT`: name of the file containing the application entrypoint. Default: `web.rb`.
