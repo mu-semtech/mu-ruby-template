@@ -1,68 +1,117 @@
 # Mu Ruby template
-Template for running Ruby/[Sinatra](http://www.sinatrarb.com/) microservices
+Template for writing semantic.works services in Ruby using [Sinatra](http://www.sinatrarb.com/)
 
-## Getting started
-### How to use the template
-Create a new folder. Add the following Dockerfile
-```
-FROM semtech/mu-ruby-template
-LABEL maintainer="john.doe@example.com"
-# ONBUILD of mu-ruby-template takes care of everything
-```
-Create your microservice in `web.rb`:
+## Tutorials
+### Develop your first microservice
+Requires: a semantic.works stack, like mu-project.
+
+Create a new folder for your microservice.
+
+In the folder, create your microservice in `web.rb`:
+
 ```ruby
-get '/' do
+get '/hello' do
   status 200
   {
-    message: "Hello world!"
-  }.to_json
-end
-
-get '/triples' do
-  solutions = Mu::query("SELECT * WHERE { ?s ?p ?o }")
-  triples = solutions.map do |solution|
-    {
-      subject: solution[:s],
-      predicate: solution[:p],
-      object: solution[:o]
-    }
-  end
-  status 200
-  {
-    data: triples
+    message: "Hello mu-ruby-template"
   }.to_json
 end
 ```
-### How to install additional dependencies
-You can use the Gemfile as you would expect. Just create a `Gemfile` in the root folder of your service containing the additional dependencies. The file will be automatically picked up and the dependencies will be installed.
 
-Dependencies that are installed by default can be found in the [template's Gemfile](./Gemfile).
+This service will respond with 'Hello mu-ruby-template' when receiving a GET request on '/hello'.
 
-### How to develop with the template in an application stack
-Live reload is enabled automatically when running in development mode.  You can embed the template easily in a running mu.semte.ch stack by launching it in the `docker-compose.yml` with the correct links.
-
-When developing inside an existing mu.semte.ch stack, you can use the template image, mount the volume with your sources in `/app` and add a link to the database. Set the `RACK_ENV` environment variable to `development`. The service will now live reload on changes. You'll need to restart the container when you define additional dependencies in your `Gemfile`.
-
-Optionally, you can publish the microservice on a different port, so you can access it directly without the dispatcher.  In the example below, port 8888 is used to access the service directly. We set the path to our sources directly, ensuring we can develop the microservice in its original place.
+Add the mu-ruby-template to your `docker-compose.yml` with the sources mounted directly.
 
 ```yml
-my-ruby-service:
-  image: semtech/mu-ruby-template
-  ports:
-    - 8888:80
-  environment:
-    RACK_ENV: "development"
-  links:
-    - db:database
-  volumes:
-    - /absolute/path/to/your/sources/:/app/
+version: '3.4'
+services:
+    your-microservice-name:
+      image: semtech/mu-ruby-template
+      environment:
+        NODE_ENV: "development"
+      ports:
+        - 8888:80
+      volumes:
+        - /absolute/path/to/your/sources/:/app/
 ```
 
-### How to debug
+Next, create the service by running
+```
+docker-compose up -d your-microservice-name
+```
+
+A `curl` call to the microservice will show you to message
+
+```bash
+curl http://localhost:8888/hello
+# Hello mu-ruby-template
+```
+
+## How-to
+### Develop in a mu.semte.ch stack
+Requires:
+- a semantic.works stack, like mu-project
+- 'Develop your first microservice'
+
+When developing inside an existing mu.semte.ch stack, it is easiest to set the development mode by setting the `RACK_ENV` environment variable to `development` and mount the sources directly.  This makes it easy to setup links to the database and the dispatcher. Livereload is enabled automatically when running in development mode.
+
+```yml
+version: ...
+services:
+  ...
+  your-microservice-name:
+    image: semtech/mu-ruby-template
+    environment:
+      RACK_ENV: "development"
+    volumes:
+      - /absolute/path/to/your/sources/:/app/
+```
+
+### Build a microservice based on mu-ruby-template
+Requires:
+- a semantic.works stack, like mu-project
+- 'Develop your first microservice'
+
+Add a Dockerfile with the following contents:
+
+```docker
+FROM semtech/mu-ruby-template
+LABEL maintainer="john.doe@example.com"
+```
+
+There are various ways to build a Docker image. For a production service we advise to setup automatic builds, but here we will build it locally. You can choose any name, but we will call ours 'say-hello-service'.
+
+From the root of your microservice folder execute the following command:
+```bash
+docker build -t say-hello-service .
+```
+
+Add the newly built service to your application stack in `docker-compose.yml`
+```yml
+version: ...
+services:
+  ...
+  say-hello:
+    image: say-hello-service
+```
+
+Launch the new container in your app
+```bash
+docker-compose up -d say-hello
+```
+
+### Debug your microservice
+Requires: 'Develop in a mu.semte.ch stack'.
+
 If desired, [debug](https://rubygems.org/gems/debug) and [Better Errors](https://rubygems.org/gems/better_errors) can be used during development, giving advanced ruby debugging features.
 
 #### Better Errors
 When an error occurs, an interactive [Better Errors](https://github.com/charliesome/better_errors) error page is available at `http://{container-ip}/__better_errors`. It's important to access the error page via the container's IP directly and not through localhost, identifier, dispatcher, etc.
+
+You can find your docker container's IP by executing
+```bash
+docker inspect <my-container-name>
+```
 
 #### Attach the debugger
 When running in development mode, you can attach the debugger to your microservice and add breakpoints as you're used to. The debugger requires port 12345 to be forwarded, and your service to run in development mode.
@@ -108,10 +157,52 @@ Add a breakpoint in your code by inserting a `binding.break` (alias `debugger`, 
 
 After launching your service, open Google Chrome or Chromium and visit [devtools://devtools/bundled/inspector.html?ws=127.0.0.1:12345](devtools://devtools/bundled/inspector.html?ws=127.0.0.1:12345). Once you reach the breakpoint, the file containing your code will be automatically opened in the 'Sources' tab.
 
+### Access your microservice directly
+Requires: 'Build a microservice based on mu-javascript-template' or 'Develop in a mu.semte.ch stack'
+
+If you doubt your requests are arriving at your microservice correctly, you can publish it port to access it directly. In the example below, port 8888 is used to access the service directly.
+
+Note this means you will not have the headers set by the identifier and dispatcher.
+
+Update your service definition in `docker-compose.yml` as follows:
+
+```yml
+    your-microservice-name:
+      ...
+      ports:
+        - 8888:80
+```
+
+Next, recreate the container by executing
+```bash
+docker-compose up -d your-microservice-name
+```
+
+### Add a dependency to your microservice
+You can install additional dependencies by including a `Gemfile` file next to your `web.rb`. It works as you would expect: just specify the dependencies in the `Gemfile`. They will be installed automatically at build time. In development mode you will need to restart the container.
+
+
+### Execute a SPARQL query
+The template provides several helpers. One of them, `Mu::query`, allows to easily execute a SPARQL query as shown in the following example:
+
+```ruby
+get '/triples' do
+  solutions = Mu::query("SELECT * WHERE { ?s ?p ?o }")
+  triples = solutions.map do |solution|
+    {
+      subject: solution[:s],
+      predicate: solution[:p],
+      object: solution[:o]
+    }
+  end
+  status 200
+  {
+    data: triples
+  }.to_json
+end
+```
+
 ### How to run tests
-
-**TODO To be reviewed**
-
 To test your app, run the container with `RACK_ENV` set to `test`. All [rspec](http://rspec.info/) tests matching `*_spec.rb` in `spec/` and its subdirectories will be executed.
 
     docker run --rm -e RACK_ENV=test microservice-image
@@ -128,8 +219,12 @@ You can now run your tests inside the container with:
     rspec
 
 ## Reference
+### Framework
+The mu-ruby-template is built on Sinatra. Check [Sinatra's Getting Started guide](https://sinatrarb.com/intro.html) to learn how to build a REST API in Sinatra.
+
 ### Utils
-The template provides a `Mu` module with utils to facilitate development
+The template offers a `Mu` module with utils to facilitate development
+
 #### Mu::graph
 Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
 
@@ -199,7 +294,6 @@ The template supports the following environment variables:
 - `USE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu::query`). Default: `"true"`
 - `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
 - `RACK_ENV`: environment to start the Sinatra application in. Default: `production`. Possible values `production`, `development`, `test`.
-- `APP_ENTRYPOINT`: name of the file containing the application entrypoint. Default: `web.rb`.
 - `RUBY_DEBUG_PORT`: port to use for remote debugging. Default: `12345`.
 - `RUBY_DEBUG_OPEN_FRONTEND`: frontend to use for debugging. Default: `rdbg`. Possible values: `rdbg`, `chrome`.
 - `RUBY_OPTIONS`: options to pass to the ruby command on startup. Default: `--jit`.
