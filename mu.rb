@@ -95,6 +95,9 @@ module Mu
   end
 
   module Helpers
+    # provide methods also as class methods on the module
+    extend self
+
     def session_id_header(request)
       Mu.log.debug "Get HTTP_MU_SESSION_ID request header from #{request.env.inspect}"
       request.env['HTTP_MU_SESSION_ID']
