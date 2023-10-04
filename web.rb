@@ -7,7 +7,7 @@ require 'request_store'
 if development?
   require 'sinatra/reloader'
   require 'better_errors'
-  require 'debug/open_nonstop'
+  require 'debug/session'
 end
 require_relative 'mu.rb'
 
@@ -33,8 +33,9 @@ if development?
   BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
   # set the application root in order to abbreviate filenames within the application:
   BetterErrors.application_root = File.expand_path('..', __FILE__)
-end
 
+  DEBUGGER__.open_tcp(port: ENV['RUBY_DEBUG_PORT'], nonstop: true, log_level: 'ERROR')
+end
 
 ###
 # Vocabularies
