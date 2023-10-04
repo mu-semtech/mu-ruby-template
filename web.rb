@@ -50,8 +50,8 @@ SERVICE_RESOURCE_BASE = 'http://mu.semte.ch/services/'
 ###
 # Helpers
 ###
-if Mu.truthy? ENV['INCLUDE_LEGACY_UTILS']
-  Mu.log.info "INCLUDE_LEGACY_UTILS enabled. Deprecated utilities will be included. Upgrade by using utils from the Mu-module instead. E.g. 'query' becomes 'Mu.query'"
+if Mu.truthy? ENV['USE_LEGACY_UTILS']
+  Mu.log.info "USE_LEGACY_UTILS enabled. Deprecated utilities will be included. Upgrade by using utils from the Mu-module instead. E.g. 'query' becomes 'Mu.query'"
   require_relative 'sinatra_template/helpers.rb'
   require_relative 'sinatra_template/utils.rb'
   include SinatraTemplate::Utils

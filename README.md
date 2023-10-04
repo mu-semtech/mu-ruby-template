@@ -196,7 +196,8 @@ The template supports the following environment variables:
 - `MU_SPARQL_ENDPOINT`: SPARQL endpoint URL. Default: `http://database:8890/sparql`
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
 - `LOG_LEVEL`: the level of logging (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
-- `INCLUDE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu.query`). Deprecation warnings will be printed for each usage of a legacy util. Default: `"false"`.
+- `USE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu.query`). Default: `"true"`
+- `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
 - `RACK_ENV`: environment to start the Sinatra application in. Default: `production`. Possible values `production`, `development`, `test`.
 - `APP_ENTRYPOINT`: name of the file containing the application entrypoint. Default: `web.rb`.
 - `RUBY_DEBUG_PORT`: port to use for remote debugging. Default: `12345`.
