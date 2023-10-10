@@ -5,7 +5,6 @@ require 'json'
 require 'linkeddata'
 require 'request_store'
 if development?
-  require 'sinatra/reloader'
   require 'better_errors'
   require 'debug/session'
 end
@@ -23,10 +22,6 @@ if development?
   if not File.directory?(mounted_volume) or not File.exist?("#{mounted_volume}/#{ENV['APP_ENTRYPOINT']}")
     Mu::log.warn "Template is started in development mode, but no sources are mounted in #{mounted_volume}. Expected a file at #{mounted_volume}/#{ENV['APP_ENTRYPOINT']}."
     exit(1)
-  end
-  also_reload "#{mounted_volume}/**/*"
-  after_reload do
-    Mu::log.info "Changes detected. Reloaded the app."
   end
 
   use BetterErrors::Middleware

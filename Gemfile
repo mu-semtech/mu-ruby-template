@@ -8,6 +8,7 @@ gem 'linkeddata', '~> 3.2'
 gem 'request_store', '~> 1.4'
 
 group :test, :development do
+  gem 'rerun', '~> 0.14.0'
   gem 'rspec', '~> 3.10'
   gem 'json_spec', '~> 1.1'
   gem 'rack-test', '~> 1.1'
