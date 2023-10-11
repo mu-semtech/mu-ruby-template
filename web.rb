@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
 require 'json'
-require 'linkeddata'
+require 'rdf/vocab'
 require 'request_store'
 if development?
   require 'better_errors'

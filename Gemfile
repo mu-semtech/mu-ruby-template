@@ -4,7 +4,9 @@ gem 'sinatra', '~> 2.1'
 gem 'sinatra-contrib', '~> 2.1'
 gem 'webrick', '~> 1.7'
 gem 'bson', '~> 4.0'
-gem 'linkeddata', '~> 3.2'
+gem 'sparql-client', '~> 3.3'
+gem 'rdf-vocab', '~> 3.3'
+gem 'nokogiri', '~> 1.15'
 gem 'request_store', '~> 1.4'
 
 group :test, :development do
