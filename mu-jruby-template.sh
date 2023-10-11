@@ -2,7 +2,7 @@
 cd /usr/src/app
 if [ "$RACK_ENV" == "production" ];
 then
-    exec bundle exec ruby $JRUBY_OPTIONS --server $APP_ENTRYPOINT
+    exec bundle exec ruby $JRUBY_OPTIONS $APP_ENTRYPOINT
 else
     bundle install
     if [ "$RACK_ENV" == "test" ];
