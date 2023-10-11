@@ -7,7 +7,7 @@ else
   bundle install
   if [ "$RACK_ENV" == "test" ];
   then
-    rspec
+    bundle exec rspec
   else
     exec rerun --background -- ruby $RUBY_OPTIONS $APP_ENTRYPOINT
   fi
