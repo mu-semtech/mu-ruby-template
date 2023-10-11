@@ -194,7 +194,9 @@ You can now run your tests inside the container with:
 The mu-ruby-template is built on Sinatra. Check [Sinatra's Getting Started guide](https://sinatrarb.com/intro.html) to learn how to build a REST API in Sinatra.
 
 ### Utils
-The template offers a `Mu` module with utils to facilitate development
+The template offers a `Mu` module with utils to facilitate development.
+
+The utils from the `Mu` module are also registered as helpers in `web.rb`. As such, they can also be called without the `Mu::`-module from there.
 
 #### Mu::graph
 Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
@@ -228,10 +230,10 @@ query += " }"
 
 Next to the extensions, the template also provides a helper function per datatype that takes any value as parameter. E.g. `Mu::sparql_escape_uri("http://mu.semte.ch/application")`.
 
-#### update(query)
+#### Mu::update(query)
 Executes the given SPARQL update query.
 
-#### update_modified(subject, modified = DateTime.now)
+#### Mu::update_modified(subject, modified = DateTime.now)
 Executes a SPARQL query to update the modification date of the given subject URI (string). The date defaults to now.
 
 
