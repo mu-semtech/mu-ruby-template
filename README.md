@@ -26,7 +26,7 @@ Add the mu-ruby-template to your `docker-compose.yml` with the sources mounted d
 version: '3.4'
 services:
     your-microservice-name:
-      image: semtech/mu-ruby-template:feature-ruby-3
+      image: semtech/mu-ruby-template:3.0.0
       environment:
         NODE_ENV: "development"
       ports:
@@ -60,7 +60,7 @@ version: ...
 services:
   ...
   your-microservice-name:
-    image: semtech/mu-ruby-template:feature-ruby-3
+    image: semtech/mu-ruby-template:3.0.0
     environment:
       RACK_ENV: "development"
     volumes:
@@ -75,7 +75,7 @@ Requires:
 Add a Dockerfile with the following contents:
 
 ```docker
-FROM semtech/mu-ruby-template:feature-ruby-3
+FROM semtech/mu-ruby-template:3.0.0
 LABEL maintainer="john.doe@example.com"
 ```
 
@@ -115,7 +115,7 @@ When running in development mode, you can attach the debugger to your microservi
 
 ```yml
 my-ruby-service:
-  image: semtech/mu-ruby-template:feature-ruby-3
+  image: semtech/mu-ruby-template:3.0.0
   ports:
     - 9229:9229
   environment:
@@ -196,7 +196,7 @@ To run the tests while developing, start an interactive container in the test en
 
     docker run --volume /path/to/your/code:/app
                 -e RACK_ENV=test
-                -it semtech/mu-ruby-template:feature-ruby-3 /bin/bash
+                -it semtech/mu-ruby-template:3.0.0 /bin/bash
 
 You can now run your tests inside the container with:
 
