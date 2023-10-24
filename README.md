@@ -173,6 +173,20 @@ get '/triples' do
 end
 ```
 
+### Include utils as globals
+The utils can be included as global functions by including the `Mu` module. This makes the code somewhat shorter but may cause conflicts with other libraries in the global namespace.
+
+For example `Mu::query` can then be written as `query`:
+
+```ruby
+include Mu
+
+get '/triples' do
+  solutions = query("SELECT * WHERE { ?s ?p ?o }")
+  ...
+end
+```
+
 ### How to run tests
 To test your app, run the container with `RACK_ENV` set to `test`. All [rspec](http://rspec.info/) tests matching `*_spec.rb` in `spec/` and its subdirectories will be executed.
 
@@ -195,8 +209,6 @@ The mu-ruby-template is built on Sinatra. Check [Sinatra's Getting Started guide
 
 ### Utils
 The template offers a `Mu` module with utils to facilitate development.
-
-The utils from the `Mu` module are also registered as helpers in `web.rb`. As such, they can also be called without the `Mu::`-module from there.
 
 #### Mu::graph
 Returns the application graph configured through the `MU_APPLICATION_GRAPH`.
