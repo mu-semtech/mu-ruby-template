@@ -4,10 +4,6 @@ require 'sinatra'
 require 'json'
 require 'rdf/vocab'
 require 'request_store'
-if development?
-  require 'better_errors'
-  require 'debug/session'
-end
 require_relative 'mu.rb'
 
 configure do
@@ -18,18 +14,25 @@ configure do
 end
 
 if development?
+  # Verify we're on a sane environment
   mounted_volume = '/app'
   if not File.directory?(mounted_volume) or not File.exist?("#{mounted_volume}/#{ENV['APP_ENTRYPOINT']}")
     Mu::log.warn "Template is started in development mode, but no sources are mounted in #{mounted_volume}. Expected a file at #{mounted_volume}/#{ENV['APP_ENTRYPOINT']}."
     exit(1)
   end
 
+  # debug/session (does not run on JRuby) provides chromium debugger support
+  unless RUBY_PLATFORM == 'java'
+    require 'debug/session'
+    DEBUGGER__.open_tcp(port: ENV['RUBY_DEBUG_PORT'], nonstop: true, log_level: 'ERROR')
+  end
+
+  # better_errors provides nicer error message on the console and interactive web page
+  require 'better_errors'
   use BetterErrors::Middleware
   BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
   # set the application root in order to abbreviate filenames within the application:
   BetterErrors.application_root = File.expand_path('..', __FILE__)
-
-  DEBUGGER__.open_tcp(port: ENV['RUBY_DEBUG_PORT'], nonstop: true, log_level: 'ERROR')
 end
 
 ###
