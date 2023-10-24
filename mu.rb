@@ -21,7 +21,7 @@ module Mu
       log_dir = '/logs'
       Dir.mkdir(log_dir) unless Dir.exist?(log_dir)
       @log = Logger.new("#{log_dir}/application.log")
-      @log.level = Kernel.const_get("Logger::#{ENV['LOG_LEVEL'].upcase}")
+      @log.level = Logger.const_get(ENV['LOG_LEVEL'].upcase)
     end
     @log
   end
