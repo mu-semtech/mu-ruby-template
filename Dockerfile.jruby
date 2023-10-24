@@ -3,7 +3,7 @@ LABEL maintainer="erika.pauwels@gmail.com"
 
 # Prevent services from freaking out when loading "native protocols db"
 RUN apt-get update \
-  && apt-get install -y netbase --no-install-recommends \
+  && apt-get install -y netbase git --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 ENV APP_ENTRYPOINT web.rb
