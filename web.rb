@@ -50,11 +50,10 @@ if Mu::truthy? ENV['USE_LEGACY_UTILS']
   Mu::log.info "USE_LEGACY_UTILS enabled. Deprecated utilities will be included. Upgrade by using utils from the Mu-module instead. E.g. 'query' becomes 'Mu::query'"
   require_relative 'sinatra_template/helpers.rb'
   require_relative 'sinatra_template/utils.rb'
-  helpers SinatraTemplate::Helpers
-else
-  helpers Mu::Helpers
   include SinatraTemplate::GlobalUtils
 end
+
+helpers Mu::Helpers
 
 ###
 # Hooks
