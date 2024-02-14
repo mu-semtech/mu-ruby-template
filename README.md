@@ -28,7 +28,7 @@ services:
     your-microservice-name:
       image: semtech/mu-ruby-template:3.1.0
       environment:
-        NODE_ENV: "development"
+        RACK_ENV: "development"
       ports:
         - 8888:80
       volumes:
