@@ -278,6 +278,8 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_ENDPOINT`: SPARQL endpoint URL. Default: `http://database:8890/sparql`
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
+- `ALLOW_MU_AUTH_SUDO`: Allow sudo queries when the service requests it.
+- `DEFAULT_MU_AUTH_SCOPE`: Default mu-auth-scope to use for calls.
 - `LOG_LEVEL`: the level of logging (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
 - `USE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu::query`). Default: `"true"`
 - `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
