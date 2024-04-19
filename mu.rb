@@ -26,13 +26,25 @@ module Mu
     @log
   end
 
-  def query(query)
+  def query(query, **options)
     log.info "Executing query: #{query}"
-    sparql_client.query query
+    @sparql_client = sparql_client(**options)
+    @sparql_client.query query
   end
 
-  def sparql_client
-    options = {}
+  def sparql_client(**options)
+    if Mu::truthy? options[:sudo]
+      if Mu::truthy? ENV['ALLOW_MU_AUTH_SUDO']
+        options[:headers] = { 'mu-auth-sudo': 'true' }
+      else
+        log.error "Error, sudo request but service lacks ALLOW_MU_AUTH_SUDO header"
+      end
+    end
+    if options[:scope]
+      options[:headers] = { 'mu-auth-sudo': options[:scope] }
+    elsif ENV['DEFAULT_MU_AUTH_SCOPE']
+      options[:headers] = { 'mu-auth-sudo': ENV['DEFAULT_MU_AUTH_SCOPE'] }
+    end
     if ENV['MU_SPARQL_TIMEOUT']
       options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
     end
@@ -71,9 +83,10 @@ module Mu
     ["true", "yes", "1"].include?(value && value.to_s.downcase)
   end
 
-  def update(query)
+  def update(query, **options)
     log.info "Executing query: #{query}"
-    sparql_client.update query
+    @sparql_client = sparql_client(**options)
+    @sparql_client.update query
   end
 
   def update_modified(subject, modified = DateTime.now)
