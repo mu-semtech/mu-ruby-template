@@ -78,7 +78,7 @@ before do
       RequestStore.store[:mu_auth_used_groups] = request.env['HTTP_MU_AUTH_USED_GROUPS']
     end
   rescue Exception => e
-    log.error e
+    Mu::log.error e
   end
 end
 
@@ -86,14 +86,14 @@ after do
   auth_headers = {}
   if RequestStore.store[:mu_auth_allowed_groups]
     if headers['mu-auth-allowed-groups']
-      log.info "ruby template: not setting allowed groups because header already provided with value #{headers['mu-auth-allowed-groups'].inspect}"
+      Mu::log.info "ruby template: not setting allowed groups because header already provided with value #{headers['mu-auth-allowed-groups'].inspect}"
     else
       auth_headers['mu-auth-allowed-groups'] = RequestStore.store[:mu_auth_allowed_groups]
     end
   end
   if RequestStore.store[:mu_auth_used_groups]
     if headers['mu-auth-used-groups']
-      log.info "ruby template: not setting used groups because header already provided with value #{headers['mu-auth-used-groups'].inspect}"
+      Mu::log.info "ruby template: not setting used groups because header already provided with value #{headers['mu-auth-used-groups'].inspect}"
     else
       auth_headers['mu-auth-used-groups'] = RequestStore.store[:mu_auth_used_groups]
     end
