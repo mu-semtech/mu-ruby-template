@@ -41,9 +41,9 @@ module Mu
       end
     end
     if options[:scope]
-      options[:headers] = { 'mu-auth-sudo': options[:scope] }
+      options[:headers] = { 'mu-auth-scope': options[:scope] }
     elsif ENV['DEFAULT_MU_AUTH_SCOPE']
-      options[:headers] = { 'mu-auth-sudo': ENV['DEFAULT_MU_AUTH_SCOPE'] }
+      options[:headers] = { 'mu-auth-scope': ENV['DEFAULT_MU_AUTH_SCOPE'] }
     end
     if ENV['MU_SPARQL_TIMEOUT']
       options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
