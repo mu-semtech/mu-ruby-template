@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'sinatra', '~> 2.1'
 gem 'sinatra-contrib', '~> 2.1'
-gem 'webrick', '~> 1.7'
+gem 'webrick', '~> 1.8.2'
 gem 'bson', '~> 4.0'
 gem 'sparql-client', '~> 3.3'
 gem 'rdf-vocab', '~> 3.3'
