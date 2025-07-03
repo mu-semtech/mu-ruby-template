@@ -1,11 +1,7 @@
-require_relative '../sinatra_template/helpers.rb'
-
-class MyHelper
-  include SinatraTemplate::Helpers
-end
+require_relative '../mu.rb'
 
 describe 'helpers' do
-  subject { MyHelper.new }
+  subject { Mu::Helpers }
   describe 'validate_json_api_content_type' do
     context 'when Content-Type is JSONAPI (application/vnd.api+json)' do
       it 'does not respond with an error' do
