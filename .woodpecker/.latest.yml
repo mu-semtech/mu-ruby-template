@@ -9,7 +9,6 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-    group: build
   build-and-push-jruby:
     image: woodpeckerci/plugin-docker-buildx
     settings:
@@ -22,7 +21,6 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-    group: build
 when:
   - event: push
     branch: [master, main]
