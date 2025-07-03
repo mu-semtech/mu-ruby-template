@@ -1,11 +1,14 @@
-pipeline:
+steps:
   build-and-push:
     image: woodpeckerci/plugin-docker-buildx
     settings:
       platforms: linux/amd64, linux/arm64
       repo: "${CI_REPO_OWNER##mu-}/${CI_REPO_NAME}"
       tags: latest
-    secrets: [docker_username, docker_password]
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
     group: build
   build-and-push-jruby:
     image: woodpeckerci/plugin-docker-buildx
@@ -14,8 +17,12 @@ pipeline:
       repo: "${CI_REPO_OWNER##mu-}/${CI_REPO_NAME/ruby/jruby}"
       tags: latest
       dockerfile: Dockerfile.jruby
-    secrets: [docker_username, docker_password]
+      from_secret: docker_username
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
     group: build
 when:
-  event: push
-  branch: [master, main]
+  - event: push
+    branch: [master, main]
