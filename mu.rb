@@ -37,7 +37,7 @@ module Mu
       if Mu::truthy? ENV['ALLOW_MU_AUTH_SUDO']
         options[:headers] = { 'mu-auth-sudo': 'true' }
       else
-        log.error "Error, sudo request but service lacks ALLOW_MU_AUTH_SUDO header"
+        raise 'sudo request but service lacks ALLOW_MU_AUTH_SUDO env var'
       end
     end
     if options[:scope]
