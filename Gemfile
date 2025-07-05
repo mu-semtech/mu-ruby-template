@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'sinatra', '~> 2.1'
 gem 'sinatra-contrib', '~> 2.1'
-gem 'webrick', '~> 1.7'
+gem 'webrick', '~> 1.8.2'
 gem 'bson', '~> 4.0'
 gem 'sparql-client', '~> 3.3'
 gem 'rdf-vocab', '~> 3.3'
@@ -17,6 +17,7 @@ group :test, :development do
   gem 'debug', '~> 1.8', :platforms => :ruby
   gem 'better_errors', '~> 2.9'
   gem 'binding_of_caller', '~> 1.0', :platforms => :ruby
+  gem "pry-debugger-jruby", "~> 2.1", :platforms => :jruby
 end
 
 Dir.glob(File.join(File.dirname(__FILE__), 'ext', '**', "Gemfile")) do |gemfile|

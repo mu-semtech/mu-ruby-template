@@ -1,6 +1,6 @@
 FROM ruby:3.2-bookworm
 
-LABEL maintainer="erika.pauwels@gmail.com"
+LABEL maintainer="team@semantic.works"
 
 ENV APP_ENTRYPOINT web.rb
 ENV RUBY_OPTIONS '--jit'

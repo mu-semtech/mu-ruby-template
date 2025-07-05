@@ -1,5 +1,5 @@
 FROM jruby:9.4
-LABEL maintainer="erika.pauwels@gmail.com"
+LABEL maintainer="team@semantic.works"
 
 # Prevent services from freaking out when loading "native protocols db"
 RUN apt-get update \
