@@ -6,18 +6,18 @@ RUN apt-get update \
   && apt-get install -y netbase git --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
-ENV APP_ENTRYPOINT web.rb
-ENV JRUBY_OPTIONS ''
-ENV RACK_ENV production
-ENV LOG_LEVEL info
-ENV RUBY_DEBUG_PORT 9229
-ENV RUBY_DEBUG_HOST 0.0.0.0
-ENV RUBY_DEBUG_OPEN_FRONTEND chrome
-ENV USE_LEGACY_UTILS 'true'
-ENV PRINT_DEPRECATION_WARNINGS 'true'
-ENV MU_SPARQL_ENDPOINT 'http://database:8890/sparql'
-ENV MU_APPLICATION_GRAPH 'http://mu.semte.ch/application'
-ENV TRUSTED_IP 0.0.0.0/0
+ENV APP_ENTRYPOINT=web.rb
+ENV JRUBY_OPTIONS=''
+ENV RACK_ENV=production
+ENV LOG_LEVEL=info
+ENV RUBY_DEBUG_PORT=9229
+ENV RUBY_DEBUG_HOST=0.0.0.0
+ENV RUBY_DEBUG_OPEN_FRONTEND=chrome
+ENV USE_LEGACY_UTILS=true
+ENV PRINT_DEPRECATION_WARNINGS=true
+ENV MU_SPARQL_ENDPOINT=http://database:8890/sparql
+ENV MU_APPLICATION_GRAPH=http://mu.semte.ch/application
+ENV TRUSTED_IP=0.0.0.0/0
 
 EXPOSE 80
 
