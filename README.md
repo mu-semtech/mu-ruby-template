@@ -221,8 +221,8 @@ The template provides a [Logger](https://ruby-doc.org/stdlib-2.3.0/libdoc/logger
 
 Logs are written to the `/logs` directory and `STDOUT` in the docker container.
 
-#### Mu::query(query)
-Executes the given SPARQL select/ask/construct query.
+#### Mu::query(query, **options)
+Executes the given SPARQL select/ask/construct query. Options is an object which may include `sudo` and `scope` keys.
 
 #### Mu::sparql_client
 Returns a SPARQL::Client instance connection to the SPARQL endpoint configured through the `MU_SPARQL_ENDPOINT` environment variable.
@@ -242,8 +242,8 @@ query += " }"
 
 Next to the extensions, the template also provides a helper function per datatype that takes any value as parameter. E.g. `Mu::sparql_escape_uri("http://mu.semte.ch/application")`.
 
-#### Mu::update(query)
-Executes the given SPARQL update query.
+#### Mu::update(query, **options)
+Executes the given SPARQL update query. Options is an object which may include `sudo` and `scope` keys.
 
 #### Mu::update_modified(subject, modified = DateTime.now)
 Executes a SPARQL query to update the modification date of the given subject URI (string). The date defaults to now.
@@ -278,6 +278,8 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_ENDPOINT`: SPARQL endpoint URL. Default: `http://database:8890/sparql`
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
+- `ALLOW_MU_AUTH_SUDO`: Allow sudo queries when the service requests it.
+- `DEFAULT_MU_AUTH_SCOPE`: Default mu-auth-scope to use for calls.
 - `LOG_LEVEL`: the level of logging (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
 - `USE_LEGACY_UTILS`: when enabled (using `"true"` or `"yes"`) legacy utils from v2 will be included in the root file so they can be used as before (e.g. `query` instead of `Mu::query`). Default: `"true"`
 - `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
