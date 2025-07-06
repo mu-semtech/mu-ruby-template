@@ -221,8 +221,8 @@ The template provides a [Logger](https://ruby-doc.org/stdlib-2.3.0/libdoc/logger
 
 Logs are written to the `/logs` directory and `STDOUT` in the docker container.
 
-#### Mu::query(query)
-Executes the given SPARQL select/ask/construct query.
+#### Mu::query(query, **options)
+Executes the given SPARQL select/ask/construct query. Options is an object which may include `sudo` and `scope` keys.
 
 #### Mu::sparql_client
 Returns a SPARQL::Client instance connection to the SPARQL endpoint configured through the `MU_SPARQL_ENDPOINT` environment variable.
@@ -242,8 +242,8 @@ query += " }"
 
 Next to the extensions, the template also provides a helper function per datatype that takes any value as parameter. E.g. `Mu::sparql_escape_uri("http://mu.semte.ch/application")`.
 
-#### Mu::update(query)
-Executes the given SPARQL update query.
+#### Mu::update(query, **options)
+Executes the given SPARQL update query. Options is an object which may include `sudo` and `scope` keys.
 
 #### Mu::update_modified(subject, modified = DateTime.now)
 Executes a SPARQL query to update the modification date of the given subject URI (string). The date defaults to now.
