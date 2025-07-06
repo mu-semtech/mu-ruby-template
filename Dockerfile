@@ -1,4 +1,4 @@
-FROM ruby:3.2-bookworm
+FROM ruby:3.4-bookworm
 
 LABEL maintainer="team@semantic.works"
 
