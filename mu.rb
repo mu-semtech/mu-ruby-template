@@ -32,18 +32,19 @@ module Mu
     @sparql_client.query query
   end
 
-  def sparql_client(**options)
-    if Mu::truthy? options[:sudo]
+  def sparql_client(**user_options)
+    options = { headers: {} }
+    if Mu::truthy? user_options[:sudo]
       if Mu::truthy? ENV['ALLOW_MU_AUTH_SUDO']
-        options[:headers] = { 'mu-auth-sudo': 'true' }
+        options[:headers]['mu-auth-sudo'] = 'true'
       else
         raise 'sudo request but service lacks ALLOW_MU_AUTH_SUDO env var'
       end
     end
-    if options[:scope]
-      options[:headers] = { 'mu-auth-scope': options[:scope] }
+    if user_options[:scope]
+      options[:headers]['mu-auth-scope'] = user_options[:scope]
     elsif ENV['DEFAULT_MU_AUTH_SCOPE']
-      options[:headers] = { 'mu-auth-scope': ENV['DEFAULT_MU_AUTH_SCOPE'] }
+      options[:headers]['mu-auth-scope'] = ENV['DEFAULT_MU_AUTH_SCOPE']
     end
     if ENV['MU_SPARQL_TIMEOUT']
       options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
