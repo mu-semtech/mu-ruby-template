@@ -23,7 +23,6 @@ This service will respond with 'Hello mu-ruby-template' when receiving a GET req
 Add the mu-ruby-template to your `docker-compose.yml` with the sources mounted directly.
 
 ```yml
-version: '3.4'
 services:
     your-microservice-name:
       image: semtech/mu-ruby-template:3.1.0
@@ -56,7 +55,6 @@ Requires:
 When developing inside an existing mu.semte.ch stack, it is easiest to set the development mode by setting the `RACK_ENV` environment variable to `development` and mount the sources directly.  This makes it easy to setup links to the database and the dispatcher. Livereload is enabled automatically when running in development mode.
 
 ```yml
-version: ...
 services:
   ...
   your-microservice-name:
@@ -88,7 +86,6 @@ docker build -t say-hello-service .
 
 Add the newly built service to your application stack in `docker-compose.yml`
 ```yml
-version: ...
 services:
   ...
   say-hello:
