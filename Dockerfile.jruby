@@ -1,4 +1,4 @@
-FROM jruby:10.0
+FROM jruby:9.4
 LABEL maintainer="team@semantic.works"
 
 # Prevent services from freaking out when loading "native protocols db"
