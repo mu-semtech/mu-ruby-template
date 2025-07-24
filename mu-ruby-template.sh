@@ -9,6 +9,6 @@ else
   then
     bundle exec rspec
   else
-    exec rerun --background -- ruby $RUBY_OPTIONS $APP_ENTRYPOINT
+    exec rerun --dir /app --background -- ruby $RUBY_OPTIONS $APP_ENTRYPOINT
   fi
 fi

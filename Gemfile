@@ -21,6 +21,6 @@ group :test, :development do
   gem 'pry-debugger-jruby', '~> 2.1', :platforms => :jruby
 end
 
-Dir.glob(File.join(File.dirname(__FILE__), 'ext', '**', "Gemfile")) do |gemfile|
+Dir.glob(File.join(File.dirname(__FILE__), 'ext', '**', 'Gemfile')) do |gemfile|
   eval(IO.read(gemfile), binding)
 end
