@@ -268,7 +268,7 @@ Validate whether the Content-Type header contains the JSONAPI Content-Type. Retu
 Validate whether the type specified in the JSON data is equal to the expected type. Returns a `409` otherwise.
 
 ### Debugger
-[ruby/debug](https://github.com/ruby/debug) supports multiple frontends for remote debugging of which we advise the Chromium inspector. You can configure the frontend via `RUBY_DEBUG_OPEN_FRONTEND` environment variable. Other options are untested.
+[ruby/debug](https://github.com/ruby/debug) supports multiple frontends for remote debugging of which we advise the Chromium inspector. You can configure the frontend via `RUBY_DEBUG_OPEN` environment variable. Other options are untested.
 
 ### Environment variables
 The template supports the following environment variables:
@@ -282,7 +282,7 @@ The template supports the following environment variables:
 - `PRINT_DEPRECATION_WARNINGS`: Deprecation warnings will be printed for each usage of a legacy util. Default: `"true"`.
 - `RACK_ENV`: environment to start the Sinatra application in. Default: `production`. Possible values `production`, `development`, `test`.
 - `RUBY_DEBUG_PORT`: port to use for remote debugging. Default: `9229`.
-- `RUBY_DEBUG_OPEN_FRONTEND`: frontend to use for debugging. Default: `chrome`. Other options are untested.
+- `RUBY_DEBUG_OPEN`: frontend to use for debugging. Default: `chrome`. Other options are untested.
 - `RUBY_OPTIONS`: options to pass to the ruby command on startup. Default: `--jit`.
 
 ### Custom build commands
