@@ -61,6 +61,7 @@ helpers Mu::Helpers
 ###
 # Hooks
 ###
+use Rack::RewindableInput::Middleware
 use RequestStore::Middleware
 
 before do
