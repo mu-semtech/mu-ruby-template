@@ -275,6 +275,8 @@ The template supports the following environment variables:
 
 - `MU_SPARQL_ENDPOINT`: SPARQL endpoint URL. Default: `http://database:8890/sparql`
 - `MU_SPARQL_TIMEOUT`: timeout (in seconds) for SPARQL queries. Default: 60 seconds.
+- `MU_SPARQL_COMPATIBILITY`: enables compatibility mode for a specific triplestore. Set to `qlever` to use the SPARQL 1.1 protocol (updates sent as a direct POST with `application/sparql-update` content type) as expected by the QLever triplestore. Default: Virtuoso behavior.
+- `MU_SPARQL_AUTH_TOKEN`: token sent as `Authorization: Bearer` header with each SPARQL request. Used by the QLever triplestore to authorize update queries. Default: none.
 - `ALLOW_MU_AUTH_SUDO`: Allow sudo queries when the service requests it.
 - `DEFAULT_MU_AUTH_SCOPE`: Default mu-auth-scope to use for calls.
 - `LOG_LEVEL`: the level of logging (default: `info`, values: `debug`, `info`, `warn`, `error`, `fatal`).
