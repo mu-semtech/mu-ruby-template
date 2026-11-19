@@ -154,7 +154,7 @@ module Mu
         headers['mu-auth-used-groups'] = RequestStore.store[:mu_auth_used_groups]
         response = super
         RequestStore.store[:mu_auth_allowed_groups] = response['mu-auth-allowed-groups']
-        RequestStore.store[:mu_auth_used_groups] = response['mu-auth-used=groups']
+        RequestStore.store[:mu_auth_used_groups] = response['mu-auth-used-groups']
         response
       end
     end
