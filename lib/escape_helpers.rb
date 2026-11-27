@@ -14,48 +14,48 @@ end
 
 class Date
   def sparql_escape
-    '"' + self.xmlschema + '"^^xsd:date'
+    '"' + self.xmlschema + '"^^<http://www.w3.org/2001/XMLSchema#date>'
   end
 end
 
 class DateTime
   def sparql_escape
-    '"' + self.xmlschema + '"^^xsd:dateTime'
+    '"' + self.xmlschema + '"^^<http://www.w3.org/2001/XMLSchema#dateTime>'
   end
 end
 
 class Integer
   def sparql_escape
-    '"' + self.to_s + '"^^xsd:integer'
+    '"' + self.to_s + '"^^<http://www.w3.org/2001/XMLSchema#integer>'
   end
 end
 
 class Float
   def sparql_escape
-    '"' + self.to_s + '"^^xsd:float'
+    '"' + self.to_s + '"^^<http://www.w3.org/2001/XMLSchema#float>'
   end
 end
 
 class Boolean
   def sparql_escape
-    self ? '"true"^^xsd:boolean' : '"false"^^xsd:boolean'
+    self ? '"true"^^<http://www.w3.org/2001/XMLSchema#boolean>' : '"false"^^<http://www.w3.org/2001/XMLSchema#boolean>'
   end
 end
 
 class TrueClass
   def sparql_escape
-    '"true"^^xsd:boolean'
+    '"true"^^<http://www.w3.org/2001/XMLSchema#boolean>'
   end
 end
 
 class FalseClass
   def sparql_escape
-    '"false"^^xsd:boolean'
+    '"false"^^<http://www.w3.org/2001/XMLSchema#boolean>'
   end
 end
 
 class Time
   def sparql_escape
-    '"' + self.xmlschema + '"^^xsd:dateTime'
+    '"' + self.xmlschema + '"^^<http://www.w3.org/2001/XMLSchema#dateTime>'
   end
 end

@@ -49,6 +49,12 @@ module Mu
     if ENV['MU_SPARQL_TIMEOUT']
       options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
     end
+    if ENV['MU_SPARQL_COMPATIBILITY'].to_s.downcase == 'qlever'
+      options[:protocol] = 1.1
+    end
+    if ENV['MU_SPARQL_AUTH_TOKEN']
+      options[:headers]['Authorization'] = "Bearer #{ENV['MU_SPARQL_AUTH_TOKEN']}"
+    end
     Mu::SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], **options)
   end
 
